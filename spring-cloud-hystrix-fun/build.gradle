@@ -1,0 +1,39 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.5.RELEASE")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+
+jar {
+    baseName = 'spring-cloud-hystrix-fun'
+    version =  '0.1.0'
+    mainClassName = "com.marceloserpa.hystrixfun.Application"
+}
+
+repositories {
+    mavenCentral()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'org.springframework.boot:spring-boot-starter-actuator'
+    compile 'org.springframework.cloud:spring-cloud-netflix-core:1.0.2.RELEASE' 
+    compile 'org.springframework.cloud:spring-cloud-starter-hystrix:1.0.2.RELEASE' 
+    compile 'org.springframework.cloud:spring-cloud-starter-hystrix-dashboard:1.0.2.RELEASE'
+    compile 'com.netflix.archaius:archaius-core:0.7.4'
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.3'
+}
