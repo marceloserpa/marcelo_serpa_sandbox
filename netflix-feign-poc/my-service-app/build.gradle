@@ -1,0 +1,36 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.5.RELEASE")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+
+jar {
+    baseName = 'feignpoc-app'
+    version =  '0.1.0'
+    mainClassName = "com.marceloserpa.feignpoc.Application"
+}
+
+repositories {
+    mavenCentral()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+	compile group: 'com.netflix.feign', name: 'feign-jaxrs', version: '8.18.0'
+	compile group: 'com.netflix.feign', name: 'feign-jackson', version: '8.18.0'
+	
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.3'
+}
