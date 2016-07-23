@@ -28,6 +28,21 @@ public class Application {
 		
 		System.out.println("============");
 		System.out.println(fakeApi.getById(1L).getName());
+		
+		System.out.println("###############");
+		
+		FakeProductApiWithBuilder api = FakeProductApiWithBuilder.connect();
+		
+		List<ProductRestModel> toAdd2 = Arrays.asList(
+				new ProductRestModel(3L, "The Hobbit - Book", 10.5D), 
+				new ProductRestModel(4L, "American Horror Stories - Book", 7.3D));
+		
+		toAdd2.stream().forEach(book -> api.add(book));
+		
+		api.all().stream().forEach(product -> System.out.println(product.getName()));
+		
+		System.out.println("============");
+		System.out.println(api.getById(4L).getName());	
 
 	}
 	
