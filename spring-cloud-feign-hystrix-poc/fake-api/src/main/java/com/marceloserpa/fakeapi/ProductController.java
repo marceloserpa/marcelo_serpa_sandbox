@@ -18,6 +18,11 @@ public class ProductController {
 	
 	@RequestMapping(value="/", method=RequestMethod.GET)
 	public List<Product> getAll(){
+		try {
+			Thread.sleep(3000L);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		return products;
 	}
 	
@@ -29,6 +34,11 @@ public class ProductController {
 	
 	@RequestMapping(value="/", method=RequestMethod.POST)
 	public void save(@RequestBody Product product){
+		try {
+			Thread.sleep(3000L);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		products.add(product);
 	}			
 	

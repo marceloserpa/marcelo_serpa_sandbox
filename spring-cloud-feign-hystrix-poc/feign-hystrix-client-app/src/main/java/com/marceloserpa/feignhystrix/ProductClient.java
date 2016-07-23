@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-@FeignClient(url="http://localhost:9001/products", name="productsApi", fallback=ProductClientFallback.class)
+@FeignClient(url="http://localhost:9001/products", name="ProductsApi", fallback=ProductClientFallback.class)
 public interface ProductClient {
 
-	@RequestMapping(value="/", method=RequestMethod.GET)
+	@RequestMapping(value="/", method=RequestMethod.GET) 
 	List<Product> all();
 	
 	@RequestMapping(value="/", method=RequestMethod.POST)
