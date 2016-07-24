@@ -27,8 +27,12 @@ targetCompatibility = 1.8
 
 dependencies {
     compile 'org.springframework.boot:spring-boot-starter-web'
-	compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-feign', version: '1.1.4.RELEASE'	
-	compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-hystrix', version: '1.1.4.RELEASE'	
+    compile 'org.springframework.boot:spring-boot-starter-actuator'
+    compile 'org.springframework.cloud:spring-cloud-netflix-core:1.1.4.RELEASE' 
+	compile 'org.springframework.cloud:spring-cloud-starter-feign:1.1.4.RELEASE'
+	compile 'org.springframework.cloud:spring-cloud-starter-hystrix:1.1.4.RELEASE'	
+	compile 'org.springframework.cloud:spring-cloud-starter-hystrix-dashboard:1.1.4.RELEASE'
+	compile 'com.netflix.archaius:archaius-core:0.7.4'
 }
 
 task wrapper(type: Wrapper) {
