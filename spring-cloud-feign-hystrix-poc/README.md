@@ -26,4 +26,9 @@ Activating circuit breaker
 
 When the fake-api is down the circuit breakers are open.
 
+Monitor
+================
+
+Access http://localhost:9000/hystrix/ and put http://localhost:9000/hystrix.stream.
+
 :)
