@@ -1,0 +1,40 @@
+group 'com.ms.uservice'
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.5.RELEASE")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+
+jar {
+    baseName = 'user-service'
+    version =  '0.1.0'
+    mainClassName = "com.ms.uservice.Application"
+}
+
+repositories {
+    mavenCentral()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter-web:1.1.4.RELEASE')
+    compile('org.springframework.cloud:spring-cloud-starter-eureka:1.1.4.RELEASE')
+    compile('org.springframework.cloud:spring-cloud-netflix-core:1.1.4.RELEASE')
+    compile('org.springframework.cloud:spring-cloud-starter-feign:1.1.4.RELEASE')
+    compile('com.netflix.archaius:archaius-core:0.7.4')
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.3'
+}
