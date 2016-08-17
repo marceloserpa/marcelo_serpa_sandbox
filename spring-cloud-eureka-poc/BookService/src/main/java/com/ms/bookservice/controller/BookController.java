@@ -17,11 +17,13 @@ public class BookController {
 
     @RequestMapping(method = RequestMethod.POST)
     public void add(@RequestBody Book book){
+        System.out.println("inside method add");
         this.books.add(book);
     }
 
     @RequestMapping(method = RequestMethod.GET)
     public List<Book> getAll(){
+        System.out.println("inside method gelAll");
         return this.books;
     }
 }
