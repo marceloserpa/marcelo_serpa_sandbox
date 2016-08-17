@@ -7,7 +7,7 @@ ribbon:
 
 feign:
   hystrix:
-    enabled: true
+    enabled: false
 
 eureka:
   client:
