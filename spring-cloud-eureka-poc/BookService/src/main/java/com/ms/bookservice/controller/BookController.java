@@ -1,10 +1,7 @@
 package com.ms.bookservice.controller;
 
 import com.ms.bookservice.model.Book;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,5 +22,10 @@ public class BookController {
     public List<Book> getAll(){
         System.out.println("inside method gelAll");
         return this.books;
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "print/{number}")
+    public void printValue(@PathVariable("number") Integer number){
+        System.out.println(String.format("Received %d !", number));
     }
 }

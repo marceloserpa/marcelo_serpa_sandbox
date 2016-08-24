@@ -1,6 +1,10 @@
 server:
   port: 9001
 
+spring:
+  application:
+    name: book-service
+
 eureka:
   client:
     serviceUrl:
