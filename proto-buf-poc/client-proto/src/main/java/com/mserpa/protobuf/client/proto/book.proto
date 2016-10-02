@@ -1,0 +1,15 @@
+
+package com.mserpa.protobuf.client.compiledproto;
+
+option java_package = "com.mserpa.protobuf.client.compiledproto";
+option java_outer_classname = "Protos";
+
+
+message MessageCard {
+    required string user = 1;
+    required string text = 2;
+}
+
+message MessageList {
+    repeated MessageCard messages = 1;
+}

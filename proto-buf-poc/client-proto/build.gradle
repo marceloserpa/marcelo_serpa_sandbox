@@ -1,0 +1,41 @@
+group 'com.mserpa.protobuf.client'
+version '1.0-SNAPSHOT'
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.5.RELEASE")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.3'
+}
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter")
+    compile("org.springframework:spring-web")
+    compile("com.fasterxml.jackson.core:jackson-databind")
+    compile("com.google.protobuf:protobuf-java:2.5.0")
+    compile("com.googlecode.protobuf-java-format:protobuf-java-format:1.2")
+    compile('com.pakulov.jersey.media:jersey-media-protobuf:0.1.0')
+}
+
+jar {
+    baseName = 'client-proto'
+    version =  '0.1.0'
+    mainClassName = "com.mserpa.protobuf.client"
+}
