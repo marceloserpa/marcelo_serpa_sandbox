@@ -1,0 +1,19 @@
+
+apply plugin: 'java-library'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+
+    runtime group: 'com.netflix.governator', name: 'governator', version: '1.17.4'    
+	runtime group: 'com.netflix.governator', name: 'governator-jetty', version: '1.17.4'
+	compile group: 'com.netflix.governator', name: 'governator-jersey', version: '1.17.4'
+
+	
+	//compile 'javax.servlet:servlet-api:2.5'
+
+    testImplementation 'junit:junit:4.12'
+}
+
