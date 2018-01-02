@@ -1,0 +1,12 @@
+
+apply plugin: 'java'
+
+repositories {
+    jcenter()
+}
+
+dependencies {	
+	compile 'com.netflix.hystrix:hystrix-core:1.5.12'
+    testCompile 'junit:junit:4.12'
+}
+
