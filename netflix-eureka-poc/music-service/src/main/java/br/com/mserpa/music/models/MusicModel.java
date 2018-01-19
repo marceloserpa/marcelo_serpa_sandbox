@@ -4,7 +4,17 @@ public class MusicModel {
 	
 	private Long id;
 	private String author;
-	private String song;
+	private String title;
+
+	public MusicModel() {
+
+	}
+	
+	public MusicModel(Long id, String author, String title) {
+		this.id = id;
+		this.author = author;
+		this.title = title;
+	}
 	
 	public Long getId() {
 		return id;
@@ -18,11 +28,12 @@ public class MusicModel {
 	public void setAuthor(String author) {
 		this.author = author;
 	}
-	public String getSong() {
-		return song;
+	public String getTitle() {
+		return title;
 	}
-	public void setSong(String song) {
-		this.song = song;
+	public void setTitle(String title) {
+		this.title = title;
 	}
+
 	
 }
