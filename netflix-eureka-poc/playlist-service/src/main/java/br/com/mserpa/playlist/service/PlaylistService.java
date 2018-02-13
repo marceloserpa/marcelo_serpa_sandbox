@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import br.com.mserpa.playlist.restclient.MusicRestClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,15 +19,12 @@ public class PlaylistService {
 	private FakeDatabase database;
 	
 	@Autowired
-	private EurekaServiceDiscovery eurekaServiceDiscovery;
+	private MusicRestClient musicRestClient;
 
 	public List<String> getPlaylist(Long id){
-		System.out.println(">>>>>>>>>>>>>>>>");
-		Optional<PlaylistModel> playlist = database.findByID(id);
-		
-		List<String> hosts = eurekaServiceDiscovery.getHosts("music-service");
-
-		return new ArrayList<>();
+		return database.findByID(id)
+			.map(playlist -> musicRestClient.getSongs(playlist))
+			.orElse(new ArrayList<>());
 	}
 	
 	
