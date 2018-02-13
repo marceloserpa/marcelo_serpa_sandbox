@@ -23,7 +23,9 @@ import org.springframework.web.jsf.el.WebApplicationContextFacesELResolver;
 
 
 public class EurekaServiceDiscovery implements ServiceDiscovery{
-	
+
+	private final static String EUREKA_HOST = "http://localhost:8080/eureka/v2/";
+
 	private RestTemplate restTemplate;
 	
 	public EurekaServiceDiscovery(RestTemplate restTemplate) {
@@ -57,15 +59,11 @@ public class EurekaServiceDiscovery implements ServiceDiscovery{
 		headers.setContentType(MediaType.APPLICATION_JSON);
 
 		HttpEntity<String> entity = new HttpEntity<String>(request,headers);
-		URI url;
+
 		try {
-			url = new URI("http://localhost:8080/eureka-server-1.8.6/v2/apps/" + appName);
-			ResponseEntity<Void> result = restTemplate.exchange(url, HttpMethod.POST, entity, Void.class);
-			
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (HttpClientErrorException e) {
+			URI url = new URI(EUREKA_HOST + "apps/" + appName);
+			restTemplate.exchange(url, HttpMethod.POST, entity, Void.class);
+		} catch (URISyntaxException | HttpClientErrorException e) {
 			e.printStackTrace();
 		}
 		
@@ -73,7 +71,7 @@ public class EurekaServiceDiscovery implements ServiceDiscovery{
 
 	@Override
 	public List<String> getHosts(String name) {		
- 		String address = "http://localhost:8080/eureka-server-1.8.6/v2/apps/"+name+"/";
+ 		String address = EUREKA_HOST + "apps/"+name+"/";
 		System.out.println(address);
 	    HttpHeaders headers = new HttpHeaders();
 	    headers.set("Accept", "application/json");
@@ -102,17 +100,12 @@ public class EurekaServiceDiscovery implements ServiceDiscovery{
 		headers.setContentType(MediaType.APPLICATION_JSON);
 
 		try {
-			String url  = "http://localhost:8080/eureka-server-1.8.6/v2/apps/" + appName + "/" + instanceID;
+			String url  = EUREKA_HOST + "apps/" + appName + "/" + instanceID;
 			System.out.println("renew -> " + url);
-			ResponseEntity<Void> result = restTemplate.exchange(new URI(url), HttpMethod.PUT, null, Void.class);
-			
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (HttpClientErrorException e) {
+			restTemplate.exchange(new URI(url), HttpMethod.PUT, null, Void.class);
+		} catch (URISyntaxException | HttpClientErrorException e) {
 			e.printStackTrace();
 		}
-		
 	}
 
 	private String buildInstanceID(String ip, String port, String appName) {

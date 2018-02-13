@@ -16,7 +16,7 @@ public class SpringBootApplicationStartup implements ApplicationListener<Applica
 	@Autowired
 	private EmbeddedWebApplicationContext embeddedWebApplicationContext;
 	
-	private static final String SERVICE_NAME = "playist-service";
+	private static final String SERVICE_NAME = "playlist-service";
 	
 	@Override
 	public void onApplicationEvent(final ApplicationReadyEvent event) {

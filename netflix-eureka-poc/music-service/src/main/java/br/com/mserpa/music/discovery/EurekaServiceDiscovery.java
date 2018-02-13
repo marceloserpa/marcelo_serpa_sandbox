@@ -11,9 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.jsf.el.WebApplicationContextFacesELResolver;
-
 
 public class EurekaServiceDiscovery implements ServiceDiscovery{
 	
@@ -52,7 +49,7 @@ public class EurekaServiceDiscovery implements ServiceDiscovery{
 		HttpEntity<String> entity = new HttpEntity<String>(request,headers);
 		URI url;
 		try {
-			url = new URI("http://localhost:8080/eureka-server-1.8.6/v2/apps/" + appName);
+			url = new URI("http://localhost:8080/eureka/v2/apps/" + appName);
 			ResponseEntity<Void> result = restTemplate.exchange(url, HttpMethod.POST, entity, Void.class);
 			
 		} catch (URISyntaxException e) {
@@ -77,7 +74,7 @@ public class EurekaServiceDiscovery implements ServiceDiscovery{
 		headers.setContentType(MediaType.APPLICATION_JSON);
 
 		try {
-			String url  = "http://localhost:8080/eureka-server-1.8.6/v2/apps/" + appName + "/" + instanceID;
+			String url  = "http://localhost:8080/eureka/v2/apps/" + appName + "/" + instanceID;
 			System.out.println("renew -> " + url);
 			ResponseEntity<Void> result = restTemplate.exchange(new URI(url), HttpMethod.PUT, null, Void.class);
 			

@@ -20,7 +20,7 @@ public class EurekaHearthbeat {
 	}
 
 	private boolean portIsDefined(String port) {
-		return !port.equals("0");
+		return !port.equals("0") && !port.equals("-1");
 	}
 	
 }
