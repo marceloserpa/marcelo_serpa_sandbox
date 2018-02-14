@@ -1,0 +1,15 @@
+group 'com.mserpa.statecontrol.app'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'biz.paluch.redis:lettuce:4.4.0.Final'
+    testCompile 'junit:junit:4.12'
+}
