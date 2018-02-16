@@ -9,6 +9,10 @@ COPY . /app_folder
 
 EXPOSE 8080:8080
 
+ARG PROFILE
+
+ENV PROFILE=${PROFILE}
+
 RUN go build server.go
 
 CMD ["./server" ]
