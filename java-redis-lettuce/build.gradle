@@ -1,4 +1,4 @@
-group 'com.mserpa.statecontrol.app'
+group 'com.mserpa.redislettuce.app'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'java'

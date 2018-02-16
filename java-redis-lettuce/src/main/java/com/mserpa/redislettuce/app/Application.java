@@ -1,4 +1,4 @@
-package com.mserpa.statecontrol.app;
+package com.mserpa.redislettuce.app;
 
 import com.google.common.base.Stopwatch;
 import com.lambdaworks.redis.RedisClient;
