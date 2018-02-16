@@ -1,6 +1,7 @@
 /.gradle/
 /bin/
 /build/
+/out/
 /gradle/
 gradlew
 *.bat
