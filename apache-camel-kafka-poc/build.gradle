@@ -1,0 +1,15 @@
+group 'com.marceloserpa.camelkafka.poc'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile('org.apache.camel:camel-kafka:2.18.5')
+    compile('org.apache.camel:camel-core:2.18.5')
+}
