@@ -15,7 +15,7 @@ public class Application {
 
     public void boot() throws Exception {
         CamelContext context = new DefaultCamelContext();
-      //  context.addRoutes(new ApplicationRouter());
+        context.addRoutes(new ApplicationRouter());
         context.addRoutes(new HttpHealthCheckRoute());
         context.start();
     }

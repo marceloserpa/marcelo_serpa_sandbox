@@ -2,10 +2,8 @@ package com.marceloserpa.camelkafka.poc.healthcheckers.producer;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.clients.producer.RecordMetadata;
 
 import java.util.Properties;
-import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 public class ProducerHealthChecker {
@@ -17,22 +15,13 @@ public class ProducerHealthChecker {
 
     public boolean check(){
         Properties props = getProperties();
-        Boolean isUp;
-        KafkaProducer<String, String> producer = new KafkaProducer<>(props);
-        try {
+        try (KafkaProducer<String, String> producer = new KafkaProducer<>(props)){
             ProducerRecord<String, String> record = new ProducerRecord<>(HEALTH_TOPIC, "health-check: up");
-            Future<RecordMetadata> future = producer.send(record);
-            try {
-                future.get(HEALTH_TIMEOUT, TimeUnit.MILLISECONDS);
-                isUp = true;
-            } catch (Exception e) {
-                isUp = false;
-            }
-            producer.close();
+            producer.send(record).get(HEALTH_TIMEOUT, TimeUnit.MILLISECONDS);
+            return true;
         }catch(Exception e){
-            isUp = false;
+            return false;
         }
-        return isUp;
     }
 
     private Properties getProperties() {

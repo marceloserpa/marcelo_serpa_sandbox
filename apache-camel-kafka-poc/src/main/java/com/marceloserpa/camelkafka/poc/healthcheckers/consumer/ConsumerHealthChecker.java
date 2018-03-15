@@ -1,6 +1,5 @@
 package com.marceloserpa.camelkafka.poc.healthcheckers.consumer;
 
-import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 
 import java.util.Arrays;
@@ -16,28 +15,19 @@ public class ConsumerHealthChecker {
 
     public boolean check(){
         Properties props = getProperties();
-        Boolean isUp;
-        try {
-            KafkaConsumer consumer = new KafkaConsumer<>(props);
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        try(KafkaConsumer consumer = new KafkaConsumer<>(props)) {
             consumer.subscribe(Arrays.asList(HEALTH_TOPIC));
-            ExecutorService executor = Executors.newSingleThreadExecutor();
             Future<Boolean> future = executor.submit((Callable) () -> {
-                ConsumerRecords poll = consumer.poll(1000);
+                consumer.poll(1000);
                 return true;
             });
-            try {
-                isUp = future.get(HEALTH_TIMEOUT, TimeUnit.MILLISECONDS);
-            } catch (TimeoutException e) {
-                isUp = false;
-            }
-            executor.shutdownNow();
-            consumer.close();
-
+            return future.get(HEALTH_TIMEOUT, TimeUnit.MILLISECONDS);
         } catch (Exception e){
-            e.printStackTrace();
-            isUp = false;
+            return false;
+        } finally {
+            executor.shutdownNow();
         }
-        return isUp;
     }
 
     private Properties getProperties() {

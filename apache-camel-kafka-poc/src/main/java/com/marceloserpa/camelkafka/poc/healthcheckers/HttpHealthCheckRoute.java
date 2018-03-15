@@ -6,15 +6,12 @@ import com.marceloserpa.camelkafka.poc.healthcheckers.models.Metrics;
 import com.marceloserpa.camelkafka.poc.healthcheckers.parser.JsonParser;
 import com.marceloserpa.camelkafka.poc.healthcheckers.producer.ProducerHealthChecker;
 import org.apache.camel.builder.RouteBuilder;
-import java.io.IOException;
+
 
 public class HttpHealthCheckRoute extends RouteBuilder{
 
     @Override
     public void configure() throws Exception {
-        onException(IOException.class)
-                .maximumRedeliveries(0).redeliveryDelay(0);
-
         from("jetty://http://localhost:8888/health")
             .to("direct:health-check-consumer")
             .to("direct:health-check-producer")
