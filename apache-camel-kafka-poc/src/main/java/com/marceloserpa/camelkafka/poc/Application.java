@@ -1,13 +1,12 @@
 package com.marceloserpa.camelkafka.poc;
 
+import com.marceloserpa.camelkafka.poc.healthcheckers.HttpHealthCheckRoute;
+import com.marceloserpa.camelkafka.poc.routes.ApplicationRouter;
 import org.apache.camel.CamelContext;
-import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.impl.DefaultCamelContext;
-import org.apache.camel.main.Main;
 
 public class Application {
 
-    private Main main;
 
     public static void main(String[] args) throws Exception {
         Application example = new Application();
@@ -15,17 +14,10 @@ public class Application {
     }
 
     public void boot() throws Exception {
-        String uri = "kafka:localhost:9092?topic=test&groupId=health";
-
-        main = new Main();
-        main.addRouteBuilder(new RouteBuilder() {
-            public void configure() throws Exception {
-                from(uri)
-                        .process(exchange -> System.out.println("sss"))
-                    .end();
-            }
-        });
-        main.start();
+        CamelContext context = new DefaultCamelContext();
+      //  context.addRoutes(new ApplicationRouter());
+        context.addRoutes(new HttpHealthCheckRoute());
+        context.start();
     }
 
 }

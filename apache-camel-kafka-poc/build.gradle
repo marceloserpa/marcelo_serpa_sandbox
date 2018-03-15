@@ -10,6 +10,10 @@ repositories {
 }
 
 dependencies {
-    compile('org.apache.camel:camel-kafka:2.18.5')
-    compile('org.apache.camel:camel-core:2.18.5')
+    compile('org.apache.camel:camel-kafka:2.20.2')
+    compile('org.apache.camel:camel-core:2.20.2')
+    compile('org.apache.camel:camel-jetty:2.20.2')
+    compile('org.slf4j:slf4j-api:1.7.25')
+    compile('org.slf4j:slf4j-jdk14:1.7.25')
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.6.3'
 }
