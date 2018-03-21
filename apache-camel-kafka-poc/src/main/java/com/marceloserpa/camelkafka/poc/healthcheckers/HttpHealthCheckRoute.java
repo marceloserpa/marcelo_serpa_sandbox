@@ -16,7 +16,7 @@ public class HttpHealthCheckRoute extends RouteBuilder{
 
     @Override
     public void configure() throws Exception {
-        from("jetty://http://localhost:8888/health")
+        from("jetty://http://0.0.0.0:8888/health")
             .multicast().parallelProcessing().aggregationStrategy(new HeadersAggregationStrategy())
                 .to("direct:health-check-consumer")
                 .to("direct:health-check-producer")

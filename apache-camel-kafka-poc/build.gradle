@@ -2,6 +2,7 @@ group 'com.marceloserpa.camelkafka.poc'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
+apply plugin: 'spring-boot'
 
 sourceCompatibility = 1.8
 
@@ -16,4 +17,17 @@ dependencies {
     compile('org.slf4j:slf4j-api:1.7.25')
     compile('org.slf4j:slf4j-jdk14:1.7.25')
     compile 'com.fasterxml.jackson.core:jackson-databind:2.6.3'
+}
+
+buildscript {
+
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.5.RELEASE")
+    }
+
 }
