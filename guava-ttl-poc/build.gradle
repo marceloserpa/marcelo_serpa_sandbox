@@ -1,0 +1,15 @@
+group 'com.mserpa.guava.ttl.poc'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'com.google.guava', name: 'guava', version: '23.0'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
