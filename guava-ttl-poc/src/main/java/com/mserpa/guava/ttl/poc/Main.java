@@ -31,8 +31,6 @@ public class Main {
         System.out.println(cache.getIfPresent("key-1"));
         Thread.sleep(300L);
 
-        cache.cleanUp();
-
         System.out.println(cache.getIfPresent("key-1"));
         Thread.sleep(300L);
 
