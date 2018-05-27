@@ -5,11 +5,6 @@ apply plugin: 'java'
 
 buildscript {
 
-    ext.deps =  [
-        nullaway          : 'com.uber.nullaway:nullaway:0.1.2',
-        errorprone        : 'com.google.errorprone:error_prone_core:2.1.1',
-    ]
-
     repositories {
         maven {
             url "https://plugins.gradle.org/m2/"
