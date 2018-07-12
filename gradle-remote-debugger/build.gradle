@@ -1,0 +1,53 @@
+group 'com.github.marceloserpa.gradle.remotedebugger'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'application'
+
+
+mainClassName = "com.github.marceloserpa.gradle.remotedebugger.Application"
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'Gradle Remote Debugger POC',
+                'Implementation-Version': version,
+                'Main-Class': 'com.github.marceloserpa.gradle.remotedebugger.Application'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+allprojects {
+    tasks.withType(JavaExec) {
+        if (System.getProperty('DEBUG', 'false') == 'true') {
+            jvmArgs '-Xdebug', '-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=9009'
+        }
+    }
+}
+
+
+run {
+    if ( project.hasProperty("appArgs") ) {
+        args Eval.me(appArgs)
+    }
+}
+
+
+dependencies {
+
+    compile group: 'org.eclipse.jetty', name: 'jetty-server', version: '9.4.11.v20180605'
+    compile group: 'org.eclipse.jetty', name: 'jetty-servlet', version: '9.4.11.v20180605'
+
+    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+    compile group: 'ch.qos.logback', name: 'logback-core', version: '1.2.3'
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
+
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
