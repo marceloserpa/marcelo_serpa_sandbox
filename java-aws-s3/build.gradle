@@ -1,0 +1,13 @@
+apply plugin: 'application'
+apply plugin: 'java'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+	compile group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.11.385'
+	compile group: 'com.amazonaws', name: 'aws-java-sdk-core', version: '1.11.385'
+    testImplementation 'junit:junit:4.12'
+}
+
