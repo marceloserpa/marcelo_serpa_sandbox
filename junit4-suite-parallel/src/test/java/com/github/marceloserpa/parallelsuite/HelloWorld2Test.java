@@ -17,16 +17,19 @@ public class HelloWorld2Test {
 	
 	@Test
 	public void sayATest() {
+		System.out.println("hello-4) Execute HelloWorld2Test.sayATest");
 		assertEquals("A", helloWorld.sayA());
 	}
 	
 	@Test
 	public void sayANotNullTest() {
+		System.out.println("hello-5) Execute HelloWorld2Test.sayANotNullTest");
 		assertNotNull(helloWorld.sayA());
 	}
 	
 	@Test
 	public void sayBTest() {
+		System.out.println("hello-6) Execute HelloWorld2Test.sayBTest");
 		assertEquals("B", helloWorld.sayB());
 	}
 
