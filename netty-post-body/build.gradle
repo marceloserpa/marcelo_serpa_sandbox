@@ -1,0 +1,24 @@
+plugins {
+    id 'java'
+    id 'eclipse'
+}
+
+jar {
+    manifest {
+        attributes "Main-Class": "com.marceloserpa.netty.poc.Application"
+    }
+ 
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+	compile('io.netty:netty-all:4.1.37.Final')	
+	compile('com.fasterxml.jackson.core:jackson-databind:2.9.9')
+	compile('com.fasterxml.jackson.core:jackson-core:2.9.9')
+}
