@@ -1,0 +1,22 @@
+{
+    "version": 2,
+    "name": "Book Novel API",
+    "port": 8080,
+    "cache_ttl": "3600s",
+    "timeout": "3s",
+    "endpoints": [
+        {
+            "endpoint": "/api/book/v1/books",
+            "backend": [
+                {
+                    "url_pattern": "/book/v1/books/",
+                    "is_collection": "true",
+                    "encoding": "json",
+                    "host": [
+                        "http://localhost:3000"
+                    ]
+                }
+            ]
+        }
+    ]
+}
