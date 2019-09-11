@@ -1,0 +1,21 @@
+ 
+buildscript {
+
+	repositories {
+		mavenCentral()
+	}
+}
+
+
+plugins {
+    id 'java-library'
+    id 'eclipse'
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {	
+	compile 'io.reactiverse:reactive-pg-client:0.11.4'
+}
