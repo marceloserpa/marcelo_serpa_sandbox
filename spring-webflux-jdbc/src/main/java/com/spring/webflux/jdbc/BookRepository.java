@@ -70,4 +70,10 @@ public class BookRepository {
 
 	}
 
+	Mono<Void> deleteBook(Long id) {
+		String sql = "DELETE FROM books WHERE id = ?";
+		Flowable<Integer> counts = db.update(sql).parameter(id).counts();
+		return Flux.from(counts).then();
+	}
+
 }
