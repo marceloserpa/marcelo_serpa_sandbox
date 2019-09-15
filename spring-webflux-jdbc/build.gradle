@@ -31,8 +31,12 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-webflux')
     // https://mvnrepository.com/artifact/com.github.davidmoten/rxjava2-jdbc
 compile group: 'com.github.davidmoten', name: 'rxjava2-jdbc', version: '0.2.5'
+  
+  // https://mvnrepository.com/artifact/org.postgresql/postgresql
+compile group: 'org.postgresql', name: 'postgresql', version: '42.2.7'
+  
     
     // https://mvnrepository.com/artifact/org.postgresql/postgresql
-compile group: 'org.postgresql', name: 'postgresql', version: '9.3-1100-jdbc4'
+//compile group: 'org.postgresql', name: 'postgresql', version: '9.3-1100-jdbc4'
       
 }

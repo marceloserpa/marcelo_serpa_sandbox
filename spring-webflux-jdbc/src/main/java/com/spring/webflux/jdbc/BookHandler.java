@@ -20,4 +20,12 @@ public class BookHandler {
 		return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(books, BookModel.class);
 	}
 
+	public Mono<ServerResponse> createNewBooks(ServerRequest request) {
+		Mono<BookModel> bookMono = request.bodyToMono(BookModel.class);
+
+		Mono<BookModel> book = repository.createNewBook(bookMono);
+
+		return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(book, BookModel.class);
+	}
+
 }
