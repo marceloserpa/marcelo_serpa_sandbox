@@ -5,4 +5,4 @@ authors = ["marceloserpa <jdev.marcelo@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-actix-web = "1.0"
+actix-web = "1.0.7"
