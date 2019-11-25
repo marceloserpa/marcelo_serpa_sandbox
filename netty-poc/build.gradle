@@ -1,6 +1,17 @@
 plugins {
-    id 'java-library'
+    id 'java'
     id 'eclipse'
+}
+
+
+jar {
+    manifest {
+        attributes "Main-Class": "com.marceloserpa.nettypoc.Application"
+    }
+ 
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
 }
 
 repositories {

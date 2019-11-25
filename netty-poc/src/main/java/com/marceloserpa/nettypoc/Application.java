@@ -32,7 +32,7 @@ public class Application {
 	         .option(ChannelOption.SO_BACKLOG, 128)         
 	         .childOption(ChannelOption.SO_KEEPALIVE, true);
 	
-	        ChannelFuture f = b.bind(9001).sync();
+	        ChannelFuture f = b.bind(8080).sync();
 	        f.channel().closeFuture().sync();
 	    } finally {
 	        workerGroup.shutdownGracefully();
