@@ -1,0 +1,11 @@
+.gradle
+
+build/
+vault/
+
+.classpath
+
+.project	
+bin/
+
+.settings/
