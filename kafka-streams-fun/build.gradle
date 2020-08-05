@@ -1,0 +1,16 @@
+plugins {
+    id 'java-library'
+    id 'eclipse'
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+	compile group: 'org.apache.kafka', name: 'kafka-streams', version: '2.6.0'
+	compile group: 'org.apache.kafka', name: 'kafka-clients', version: '2.6.0'
+	
+	implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.30'
+	implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
+}
