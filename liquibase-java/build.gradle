@@ -1,0 +1,16 @@
+plugins {
+    id 'java-library'
+    id 'eclipse'
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+	compile('org.postgresql:postgresql:42.2.8')
+	compile('org.liquibase:liquibase-core:3.8.0')
+	compile('commons-dbcp:commons-dbcp:1.4')
+	
+    testImplementation 'junit:junit:4.12'
+}

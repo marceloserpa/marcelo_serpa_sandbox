@@ -1,0 +1,15 @@
+plugins {
+	id 'eclipse'
+    id 'java-library'
+}
+
+repositories {
+    jcenter()
+	maven { url 'https://repo.spring.io/release' }
+	mavenCentral()    
+}
+
+dependencies {
+	compile "io.projectreactor.netty:reactor-netty:0.9.0.RELEASE"
+    testImplementation 'junit:junit:4.12'
+}

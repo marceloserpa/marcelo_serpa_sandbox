@@ -1,0 +1,33 @@
+buildscript {
+    repositories {
+        maven {
+            url 'https://plugins.gradle.org/m2/'
+        }
+    }
+}
+apply plugin: 'application'
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+mainClassName = 'com.marceloserpa.armeniapoc.Application'
+
+repositories {
+    mavenCentral()
+    maven { url 'https://oss.sonatype.org/content/groups/public/' }
+}
+
+dependencies {
+
+    ['armeria',
+     'armeria-logback'
+	].each {
+        compile "com.linecorp.armeria:${it}:0.96.0"
+    }
+
+    runtime 'ch.qos.logback:logback-classic:1.2.3'
+    runtime 'org.slf4j:log4j-over-slf4j:1.7.29'
+}
+

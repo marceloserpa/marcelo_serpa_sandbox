@@ -1,0 +1,23 @@
+plugins {
+    id 'java-library'
+    id 'eclipse'
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile group: 'org.apache.spark', name: 'spark-core_2.12', version: '2.4.0'
+    
+    compile('org.apache.hadoop:hadoop-mapreduce-client-core:2.7.2') {force = true}
+	compile('org.apache.hadoop:hadoop-common:2.7.2') {force = true} // required for org.apache.hadoop.util.StopWatch  
+	compile('commons-io:commons-io:2.4') {force = true} // required for org.apache.commons.io.Charsets that is used internally
+    
+   // implementation 'com.google.guava:guava:15.0.0'
+    
+    testImplementation 'junit:junit:4.12'
+}
+
+
+  
