@@ -1,0 +1,16 @@
+plugins {
+    id 'java-library'
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+ 	implementation "io.projectreactor.rabbitmq:reactor-rabbitmq:1.4.3.RELEASE"
+	implementation "org.slf4j:slf4j-simple:1.7.30"
+	implementation "org.slf4j:slf4j-api:1.7.30"
+
+	testCompile "org.mockito:mockito-core:3.4.6"
+    testImplementation 'junit:junit:4.12'
+}
