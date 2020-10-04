@@ -1,0 +1,7 @@
+.classpath
+.gitattributes
+.project
+.settings/org.eclipse.buildship.core.prefs
+bin/.gitignore
+.gradle
+build
