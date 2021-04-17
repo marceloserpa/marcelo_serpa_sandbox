@@ -13,7 +13,7 @@ public class Application {
 
         System.out.println(bookDTO.getTitle());
         System.out.println(bookDTO.getAuthor());
-        System.out.println(bookDTO.getNumberOfPages());
+        System.out.println(bookDTO.getPages());
         System.out.println(bookDTO.getDescription());
 
     }
