@@ -6,6 +6,7 @@ public class Book {
     private String title;
     private String description;
     private int numberOfPages;
+    private String publicationDate;
 
     public String getAuthor() {
         return author;
@@ -37,5 +38,13 @@ public class Book {
 
     public void setNumberOfPages(int numberOfPages) {
         this.numberOfPages = numberOfPages;
+    }
+
+    public String getPublicationDate() {
+        return publicationDate;
+    }
+
+    public void setPublicationDate(String publicationDate) {
+        this.publicationDate = publicationDate;
     }
 }

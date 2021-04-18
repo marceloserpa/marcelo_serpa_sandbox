@@ -1,11 +1,14 @@
 package com.marceloserpa.mapstruct;
 
+import java.time.LocalDate;
+
 public class BookDTO {
 
     private String author;
     private String title;
     private String description;
     private int pages;
+    private LocalDate publicationDate;
 
     public String getAuthor() {
         return author;
@@ -37,5 +40,13 @@ public class BookDTO {
 
     public void setPages(int pages) {
         this.pages = pages;
+    }
+
+    public LocalDate getPublicationDate() {
+        return publicationDate;
+    }
+
+    public void setPublicationDate(LocalDate publicationDate) {
+        this.publicationDate = publicationDate;
     }
 }

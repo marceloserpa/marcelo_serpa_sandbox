@@ -11,6 +11,7 @@ public interface BookMapper {
     BookMapper INSTANCE = Mappers.getMapper(BookMapper.class );
 
     @Mapping(target = "pages", source = "numberOfPages")
+    @Mapping(target = "publicationDate", source = "publicationDate", dateFormat = "yyyy/MM/dd")
     BookDTO bookToBookDto(Book book);
 
 
