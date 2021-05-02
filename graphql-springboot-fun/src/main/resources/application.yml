@@ -1,0 +1,12 @@
+server:
+  port: 9000
+
+spring:
+  application:
+    name: graphql-poc
+
+graphql:
+  servlet:
+    mapping: /graphql
+    enabled: true
+    corsEnabled: true
