@@ -1,0 +1,8 @@
+type Query {
+    getBooks(titleFilter: String): [Book]
+}
+
+type Book {
+    title: String
+    releaseYear: Int
+}
