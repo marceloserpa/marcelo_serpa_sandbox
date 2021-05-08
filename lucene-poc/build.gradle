@@ -1,0 +1,22 @@
+plugins {
+    id 'java'
+}
+
+group 'com.marceloserpa.lucenepoc'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.apache.lucene:lucene-core:7.1.0'
+    implementation 'org.apache.lucene:lucene-queryparser:7.1.0'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+}
+
+test {
+    useJUnitPlatform()
+}
