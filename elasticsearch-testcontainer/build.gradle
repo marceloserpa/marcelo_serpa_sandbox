@@ -1,0 +1,23 @@
+plugins {
+    id 'java'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.elasticsearch.client:elasticsearch-rest-high-level-client:7.8.0'
+    compile 'org.elasticsearch:elasticsearch:7.8.0'
+
+    testImplementation "org.testcontainers:elasticsearch:1.16.0"
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+}
+
+test {
+    useJUnitPlatform()
+}
