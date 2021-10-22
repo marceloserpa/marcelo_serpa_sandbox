@@ -1,10 +1,10 @@
-package com.marceloserpa.configserver;
+package com.marceloserpa.configclient;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ConfigserverApplicationTests {
+class ConfigclientApplicationTests {
 
 	@Test
 	void contextLoads() {

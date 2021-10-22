@@ -2,12 +2,15 @@ package com.marceloserpa.configserver;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.config.server.EnableConfigServer;
 
+
+@EnableConfigServer
 @SpringBootApplication
-public class ConfigserverApplication {
+public class ConfigServerApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ConfigserverApplication.class, args);
+		SpringApplication.run(ConfigServerApplication.class, args);
 	}
 
 }
