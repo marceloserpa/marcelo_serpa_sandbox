@@ -1,0 +1,19 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: configserver
+  profiles:
+    active: native, vault
+  cloud:
+    config:
+      server:
+        native:
+          searchLocations: file://${HOME}/Documents/config-repository-poc
+        vault:
+          port: 8200
+          host: 127.0.0.1
+          authentication: TOKEN
+          token: 00000000-0000-0000-0000-000000000000
+          kv-version: 2
