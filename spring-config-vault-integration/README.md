@@ -1,14 +1,15 @@
 
 # Spring Cloud Config + vault integration
 
-Prepare local git-repository:
+
+## configure local git repository
 
 ```
 cd ~/Documents/
 mkdir config-repository-poc
 cd config-repository-poc/
 git init .
-touch a-bootiful-client.properties
+touch dev-environment.properties
 ```
 
 Add the property:
@@ -16,6 +17,27 @@ Add the property:
 ```
 message = Hello world
 ```
+
+
+
+## configure Vault
+
+
+Start the vault
+
+```
+cd vault
+docker-compose up -d
+```
+
+enter inside the container and configure it:
+
+```
+vault login
+vault kv put secret/dev-environment foo=bar
+```
+
+## starting env
 
 Run configserver application and after start configclient application
 
