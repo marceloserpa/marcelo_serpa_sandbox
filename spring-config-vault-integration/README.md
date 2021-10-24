@@ -48,7 +48,7 @@ Call the message endpoint and you will see "Hello world":
  curl localhost:9000/message
 ```
 
-Go to your local git repository and change the property message on a-bootiful-client.properties. You should call call referesh endpoint from client-application to sync properties values.
+Go to your local git repository and change the property message on dev-environment.properties. You should call call refresh endpoint from client-application to sync properties values.
 
 ```
 curl -X POST http://localhost:9000/actuator/refresh
