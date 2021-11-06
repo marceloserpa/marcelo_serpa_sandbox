@@ -1,4 +1,4 @@
-package com.marceloserpa.reactorkafka;
+package com.marceloserpa.reactorkafka.sender;
 
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.IntegerSerializer;
@@ -8,9 +8,9 @@ import reactor.kafka.sender.KafkaSender;
 import reactor.kafka.sender.SenderOptions;
 import reactor.kafka.sender.SenderRecord;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class ApplicationSender {
 
@@ -27,16 +27,20 @@ public class ApplicationSender {
         String topic = "messages";
         Long timestamp = System.currentTimeMillis();
 
-
-
         KafkaSender<Integer, String> sender = KafkaSender.create(senderOptions);
 
         Flux<SenderRecord<Integer, String, Integer>> outboundFlux =
                 Flux.range(1, 10)
-                        .map(i -> SenderRecord.create(topic, null, timestamp, i, "Message_" + i, i));
+                        .map(i -> {
+                            Random generator = new Random();
+                            int a = generator.nextInt(1000) + 1;
+                            int b = generator.nextInt(1000) + 1;
+                            String message = a + "+" + b;
+
+                            return SenderRecord.create(topic, null, timestamp, i, message, i);
+                        });
 
         sender.send(outboundFlux)
-             //   .doOnError(e-> log.error("Send failed", e))
                 .doOnNext(r -> System.out.printf("Message #%d send response: %s\n", r.correlationMetadata(), r.recordMetadata()))
                 .subscribe();
     }

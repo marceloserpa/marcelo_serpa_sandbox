@@ -1,4 +1,4 @@
-package com.marceloserpa.reactorkafka;
+package com.marceloserpa.reactorkafka.receiver;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.IntegerDeserializer;
@@ -28,12 +28,12 @@ public class ApplicationReceiver {
                         .subscription(Collections.singleton("messages"));
 
 
-        KafkaReceiver.create(receiverOptions)
-                .receive()
-                .subscribe(r -> {
-                    System.out.printf(">>> Received message: %s\n", r);
-                    r.receiverOffset().acknowledge();
-                });
+        KafkaReceiver<Integer, String> integerStringKafkaReceiver = KafkaReceiver.create(receiverOptions);
+        CalculationService calculationService = new CalculationService();
+
+        Receiver receiver = new Receiver(integerStringKafkaReceiver, calculationService);
+        receiver.start();
+
 
     }
 
