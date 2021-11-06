@@ -1,4 +1,4 @@
-package com.marceloserpa.reactorkafka.receiver;
+package com.marceloserpa.reactorkafka.receiverflatmap;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.IntegerDeserializer;
@@ -29,7 +29,7 @@ public class ApplicationReceiver {
         KafkaReceiver<Integer, String> integerStringKafkaReceiver = KafkaReceiver.create(receiverOptions);
         CalculationService calculationService = new CalculationService();
 
-        CalculationReceiver1 receiver = new CalculationReceiver1(integerStringKafkaReceiver, calculationService);
+        CalculationReceiver2 receiver = new CalculationReceiver2(integerStringKafkaReceiver, calculationService);
         receiver.start();
 
 
