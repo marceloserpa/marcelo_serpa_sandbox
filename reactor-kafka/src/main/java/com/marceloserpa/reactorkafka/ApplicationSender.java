@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Application {
+public class ApplicationSender {
 
     public static void main(String[] args) {
         Map<String, Object> producerProps = new HashMap<>();
