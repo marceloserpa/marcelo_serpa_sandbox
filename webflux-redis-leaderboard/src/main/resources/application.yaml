@@ -1,0 +1,5 @@
+
+redis:
+  host: "localhost"
+  port: 6379
+  timeout-seconds: 60
