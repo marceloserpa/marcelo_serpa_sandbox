@@ -19,4 +19,27 @@ Access the API
 ```shell
 curl -X GET 'localhost:8080/books/hello' \
 -H 'Authorization: Bearer <<YOUR ACCESS TOKEN>>' 
-``
+```
+
+
+Adding Roles:
+
+Create client roles Admin & Member:
+Clients >> marcelo-corp >>  Roles >> Add Role
+
+
+Create Healm roles app-admin & app-member
+
+
+click "Composite Roles"
+select your client, in my situation 'marcelo-corp', choose Admin or Member.
+
+
+Create User
+- name = user1
+- click email verified
+- switch to tab credentials ... set password '123456'
+- switch to tab 'role mappings', choose admin
+- remove all information in "Required User Actions"
+
+Create other user with member role
