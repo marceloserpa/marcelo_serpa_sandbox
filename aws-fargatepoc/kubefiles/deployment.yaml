@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fargate-poc
+  namespace: default
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: fargate-poc
+  template:
+    metadata:
+      labels:
+        app: fargate-poc
+    spec:
+      containers:
+        - name: demo-frontend
+          # image: <<YOUR-ACCOUNT-ID>>.dkr.ecr.<<YOUR-REGION>>.amazonaws.com/fargate-poc:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
