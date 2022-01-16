@@ -1,0 +1,31 @@
+{
+  "index_patterns": ["blog-article-*"],
+  "settings": {
+    "number_of_shards": 2,
+    "number_of_replicas": 1
+  },
+
+  "mappings": {
+
+    "properties": {
+
+      "tenant": {
+        "type": "keyword"
+      },
+
+      "title": {
+        "type": "text"
+      },
+      "content": {
+        "type": "text"
+      },
+      "slug": {
+        "type": "keyword"
+      },
+      "create_at": {
+        "type": "date"
+      }
+    }
+
+  }
+}
