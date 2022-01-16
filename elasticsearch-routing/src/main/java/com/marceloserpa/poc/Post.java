@@ -1,15 +1,15 @@
 package com.marceloserpa.poc;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public class Post {
 
-
+    private String  id;
     private String tenant;
     private String title;
     private String content;
     private String slug;
-    private LocalDateTime createAt;
+    private LocalDate createAt;
 
     public String getTenant() {
         return tenant;
@@ -43,11 +43,31 @@ public class Post {
         this.slug = slug;
     }
 
-    public LocalDateTime getCreateAt() {
+    public LocalDate getCreateAt() {
         return createAt;
     }
 
-    public void setCreateAt(LocalDateTime createAt) {
+    public void setCreateAt(LocalDate createAt) {
         this.createAt = createAt;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "id='" + id + '\'' +
+                ", tenant='" + tenant + '\'' +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", slug='" + slug + '\'' +
+                ", createAt=" + createAt +
+                '}';
     }
 }

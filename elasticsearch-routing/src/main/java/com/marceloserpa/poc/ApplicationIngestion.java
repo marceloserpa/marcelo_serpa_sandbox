@@ -15,7 +15,6 @@ import org.elasticsearch.index.query.QueryBuilders;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -23,7 +22,7 @@ import java.util.*;
 public class ApplicationIngestion {
 
     private static final Logger log = LogManager.getLogger(ApplicationIngestion.class);
-    private static DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    public static DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public static void main(String[] args) throws IOException {
 
@@ -42,14 +41,14 @@ public class ApplicationIngestion {
         post1.setTitle("Lorem Ipsum");
         post1.setSlug("lorem-ipsum");
         post1.setContent("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat");
-        post1.setCreateAt(LocalDateTime.now());
+        post1.setCreateAt(LocalDate.now());
 
         Post post2 = new Post();
         post2.setTenant("hackernews");
         post2.setTitle("Bibendum at varius");
         post2.setSlug("bibendum-at-varius");
         post2.setContent("Bibendum at varius vel pharetra vel turpis. Lacinia at quis risus sed vulputate odio ut enim. Malesuada proin libero nunc consequat interdum varius sit amet.");
-        post2.setCreateAt(LocalDateTime.now());
+        post2.setCreateAt(LocalDate.now());
 
 
         Post post3 = new Post();
@@ -57,7 +56,7 @@ public class ApplicationIngestion {
         post3.setTitle("Lorem ipsum");
         post3.setSlug("lorem-ipsum-2");
         post3.setContent("Quis viverra nibh cras pulvinar mattis nunc sed blandit libero. Arcu vitae elementum curabitur vitae nunc sed velit dignissim sodales. A pellentesque sit amet porttitor.");
-        post3.setCreateAt(LocalDateTime.now());
+        post3.setCreateAt(LocalDate.now());
 
         BulkRequest bulkRequest = new BulkRequest();
         bulkRequest.add(new IndexRequest("blog-article-2022").id("1").source(postToMap(post1)));
