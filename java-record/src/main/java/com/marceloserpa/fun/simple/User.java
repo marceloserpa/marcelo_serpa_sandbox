@@ -1,4 +1,4 @@
-package com.marceloserpa.fun.records;
+package com.marceloserpa.fun.simple;
 
 public record User(String email, String name, Address address) {
 }
