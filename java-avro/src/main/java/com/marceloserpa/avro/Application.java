@@ -1,8 +1,14 @@
 package com.marceloserpa.avro;
 
 import org.apache.avro.Schema;
-import org.apache.avro.generic.GenericData;
-import org.apache.avro.generic.GenericRecordBuilder;
+import org.apache.avro.file.DataFileReader;
+import org.apache.avro.file.DataFileWriter;
+import org.apache.avro.generic.*;
+import org.apache.avro.io.DatumReader;
+import org.apache.avro.io.DatumWriter;
+
+import java.io.File;
+import java.io.IOException;
 
 public class Application {
 
@@ -32,9 +38,31 @@ public class Application {
         customerBuilder.set("weight", 80.5f);
         customerBuilder.set("automated_email", false);
         GenericData.Record customer = customerBuilder.build();
-
-
         System.out.println(customer);
+
+
+        DatumWriter<GenericRecord> writer = new GenericDatumWriter<>();
+        try(DataFileWriter<GenericRecord> dataFileWriter = new DataFileWriter<>(writer)) {
+            dataFileWriter.create(customer.getSchema(), new File("customer-generic.avro"));
+            dataFileWriter.append(customer);
+        } catch (IOException e) {
+            e.printStackTrace();
+            e.printStackTrace();
+        }
+
+
+        final File file = new File("customer-generic.avro");
+        final DatumReader<GenericRecord> datumReader = new GenericDatumReader<>();
+        GenericRecord customerRead;
+        try (DataFileReader<GenericRecord> dataFileReader = new DataFileReader<>(file, datumReader)){
+            customerRead = dataFileReader.next();
+            System.out.println(customerRead.toString());
+            System.out.println("First name: " + customerRead.get("first_name"));
+            System.out.println("Non existent field: " + customerRead.get("not_here"));
+        }
+        catch(IOException e) {
+            e.printStackTrace();
+        }
 
 
     }
