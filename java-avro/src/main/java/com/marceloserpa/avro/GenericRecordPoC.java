@@ -10,7 +10,7 @@ import org.apache.avro.io.DatumWriter;
 import java.io.File;
 import java.io.IOException;
 
-public class Application {
+public class GenericRecordPoC {
 
     public static void main(String[] args) {
 
