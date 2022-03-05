@@ -1,4 +1,4 @@
-package com.marceloserpa.springkafka;
+package com.marceloserpa.springkafka.config;
 
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
