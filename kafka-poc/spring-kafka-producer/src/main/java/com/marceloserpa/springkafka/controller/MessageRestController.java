@@ -31,7 +31,10 @@ public class MessageRestController {
         }
 
         if(payload != null) {
+            System.out.println(">>>>> send message");
             kafkaTemplate.send("messages", payload);
+        } else {
+            System.out.println(">>>>> Payload is empty");
         }
 
 
