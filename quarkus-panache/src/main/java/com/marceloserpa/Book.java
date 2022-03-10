@@ -1,13 +1,23 @@
 package com.marceloserpa;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
+public class Book {
 
-import javax.persistence.Entity;
+    private long id;
+    private String title;
 
-@Entity(name = "books")
-public class Book extends PanacheEntity {
+    public long getId() {
+        return id;
+    }
 
-    public long id;
-    public String title;
+    public void setId(long id) {
+        this.id = id;
+    }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 }
