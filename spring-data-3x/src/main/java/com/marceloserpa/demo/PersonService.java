@@ -1,5 +1,7 @@
 package com.marceloserpa.demo;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,4 +23,11 @@ public class PersonService {
     public List<Person> getAll(){
         return repository.findAll();
     }
+
+    public Page<Person> getAllPage(){
+        PageRequest pageable = PageRequest.of(0, 5);
+        return repository.findAll(pageable);
+    }
+
+
 }

@@ -1,5 +1,6 @@
 package com.marceloserpa.demo;
 
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +27,11 @@ public class PersonController {
     @GetMapping
     public List<Person> getALl() {
         return personService.getAll();
+    }
+
+    @GetMapping("/page")
+    public Page<Person> getAllPage() {
+        return personService.getAllPage();
     }
 
 
