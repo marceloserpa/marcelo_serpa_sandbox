@@ -2,6 +2,8 @@ package com.marceloserpa.demo;
 
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PersonService {
 
@@ -16,7 +18,7 @@ public class PersonService {
         return saved;
     }
 
-    public Iterable<Person> getAll(){
+    public List<Person> getAll(){
         return repository.findAll();
     }
 }

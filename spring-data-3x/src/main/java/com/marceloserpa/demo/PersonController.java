@@ -25,8 +25,7 @@ public class PersonController {
 
     @GetMapping
     public List<Person> getALl() {
-        return StreamSupport.stream(personService.getAll().spliterator(), false)
-                .collect(Collectors.toList());
+        return personService.getAll();
     }
 
 
