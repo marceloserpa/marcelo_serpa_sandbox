@@ -14,31 +14,36 @@ public class Extract {
         //Create a PdfTableExtractor instance
         PdfTableExtractor extractor = new PdfTableExtractor(pdf);
 
-        //Extract tables from the first page
-        PdfTable[] pdfTables = extractor.extractTable(0);
 
-        //Get the first table
-        PdfTable table = pdfTables[0];
+        for(int z = 0; z < pdf.getPages().getCount(); z++) {
+            //Extract tables from the first page
+            PdfTable[] pdfTables = extractor.extractTable(z);
 
-        //Create a StringBuilder instance
-        StringBuilder builder = new StringBuilder();
+            //Get the first table
+            PdfTable table = pdfTables[z];
 
-        //Loop through the rows in the current table
-        for (int i = 0; i < table.getRowCount(); i++) {
+            //Create a StringBuilder instance
+            StringBuilder builder = new StringBuilder();
 
-            //Loop through the columns in the current table
-            for (int j = 0; j < table.getColumnCount(); j++) {
+            //Loop through the rows in the current table
+            for (int i = 0; i < table.getRowCount(); i++) {
 
-                //Extract data from the current table cell
-                String text = table.getText(i, j);
+                //Loop through the columns in the current table
+                for (int j = 0; j < table.getColumnCount(); j++) {
 
-                //Append the text to the string builder
-                builder.append(text + " ");
+                    //Extract data from the current table cell
+                    String text = table.getText(i, j);
+
+                    //Append the text to the string builder
+                    builder.append(text + " ");
+                }
+                builder.append("\r\n");
             }
-            builder.append("\r\n");
+            System.out.println("PAGE " + z);
+            System.out.println(builder.toString());
+            System.out.println("-----------------------------\n\n");
         }
 
-        System.out.println(builder.toString());
 
         //Write data into a .txt document
         /**
