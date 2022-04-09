@@ -1,6 +1,5 @@
 package com.marceloserpa.aggregatefun;
 
-import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
@@ -12,15 +11,6 @@ import javax.sql.DataSource;
 @EnableJdbcRepositories
 public class DataBaseConfig {
 
-    @Bean
-    public DataSource dataSource() {
-        BasicDataSource ds = new BasicDataSource();
-        ds.setDriverClassName("org.postgresql.Driver");
-        ds.setUrl("jdbc:postgresql://localhost:5442/mypoc");
-        ds.setUsername("marceloserpa");
-        ds.setPassword("123456");
-        return ds;
-    }
 
     @Bean
     public NamedParameterJdbcTemplate namedParameterJdbcTemplate(DataSource dataSource) {
