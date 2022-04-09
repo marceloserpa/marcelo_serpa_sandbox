@@ -27,6 +27,12 @@ class PurchaseOrderTest {
 
         Assertions.assertEquals(repository.count(), 1);
         Assertions.assertEquals(repository.countItems(), 2);
+
+        repository.delete(saved);
+
+        Assertions.assertEquals(repository.count(), 0);
+        Assertions.assertEquals(repository.countItems(), 0);
+
     }
 
 
