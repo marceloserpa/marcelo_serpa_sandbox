@@ -1,4 +1,4 @@
-package com.marceloserpa.aggregatefun;
+package com.marceloserpa.aggregatefun.orders;
 
 public class OrderItem {
 

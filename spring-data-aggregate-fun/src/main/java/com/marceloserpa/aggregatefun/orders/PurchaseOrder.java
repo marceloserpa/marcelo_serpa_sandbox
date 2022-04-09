@@ -1,4 +1,4 @@
-package com.marceloserpa.aggregatefun;
+package com.marceloserpa.aggregatefun.orders;
 
 import org.springframework.data.annotation.Id;
 

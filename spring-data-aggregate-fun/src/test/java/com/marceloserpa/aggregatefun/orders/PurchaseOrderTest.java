@@ -1,5 +1,8 @@
-package com.marceloserpa.aggregatefun;
+package com.marceloserpa.aggregatefun.orders;
 
+import com.marceloserpa.aggregatefun.DataBaseConfig;
+import com.marceloserpa.aggregatefun.orders.PurchaseOrder;
+import com.marceloserpa.aggregatefun.orders.PurchaseOrderRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
