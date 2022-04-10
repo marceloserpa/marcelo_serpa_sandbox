@@ -1,8 +1,11 @@
 package com.marceloserpa.reactivepgpoc;
 
 import io.smallrye.mutiny.Multi;
+import io.smallrye.mutiny.Uni;
 import io.vertx.mutiny.pgclient.PgPool;
 import io.vertx.mutiny.sqlclient.Row;
+import io.vertx.mutiny.sqlclient.RowSet;
+import io.vertx.mutiny.sqlclient.Tuple;
 
 
 public class Fruit {
@@ -27,6 +30,12 @@ public class Fruit {
         return client.query("SELECT id, name FROM fruits ORDER BY name ASC").execute()
                 .onItem().transformToMulti(set -> Multi.createFrom().iterable(set))
                 .onItem().transform(Fruit::from);
+    }
+
+    public static Uni<Fruit> findById(PgPool client, Long id) {
+        return client.preparedQuery("SELECT id, name FROM fruits WHERE id = $1").execute(Tuple.of(id))
+                .onItem().transform(RowSet::iterator)
+                .onItem().transform(iterator -> iterator.hasNext() ? from(iterator.next()) : null);
     }
 
     private static Fruit from(Row row) {
