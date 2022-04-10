@@ -32,6 +32,16 @@ public class Fruit {
                 .onItem().transform(Fruit::from);
     }
 
+    public Uni<Long> save(PgPool client) {
+        return client.preparedQuery("INSERT INTO fruits (name) VALUES ($1) RETURNING id").execute(Tuple.of(name))
+                .onItem().transform(pgRowSet -> pgRowSet.iterator().next().getLong("id"));
+    }
+
+    public static Uni<Boolean> delete(PgPool client, Long id) {
+        return client.preparedQuery("DELETE FROM fruits WHERE iD = $1").execute(Tuple.of(id))
+                .onItem().transform(pgRowSet -> pgRowSet.rowCount() == 1);
+    }
+
     public static Uni<Fruit> findById(PgPool client, Long id) {
         return client.preparedQuery("SELECT id, name FROM fruits WHERE id = $1").execute(Tuple.of(id))
                 .onItem().transform(RowSet::iterator)
