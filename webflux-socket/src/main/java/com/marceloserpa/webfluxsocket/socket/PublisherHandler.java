@@ -18,9 +18,6 @@ public class PublisherHandler implements WebSocketHandler {
     @Override
     public Mono<Void> handle(WebSocketSession session) {
         Flux<WebSocketMessage> messages = eventGeneratorService.getMessages()
-                .flatMap(o -> {
-                  return Mono.just(o);
-                })
                 .map(session::textMessage);
 
         return session.send(messages);

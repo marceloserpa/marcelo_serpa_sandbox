@@ -23,7 +23,8 @@ public class EventGenerator {
     public void generateEvent() {
 
         int count = counter.getAndIncrement();
-        System.out.println("-------------------------------------------------: " + count);
-        generatorService.onNext("created: " + count);
+        String message = "created: " + count;
+        System.out.println(">>>: " + message);
+        generatorService.onNext(message);
     }
 }
