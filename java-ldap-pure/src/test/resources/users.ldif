@@ -1,0 +1,20 @@
+version: 1
+dn: dc=mserpa,dc=com
+objectClass: domain
+objectClass: top
+dc: mserpa
+
+dn: ou=Users,dc=mserpa,dc=com
+objectClass: organizationalUnit
+objectClass: top
+ou: Users
+
+dn: cn=Marcelo Serpa,ou=Users,dc=mserpa,dc=com
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+cn: Marcelo Serpa
+sn: Serpa
+uid: user1
+userPassword: 12345
