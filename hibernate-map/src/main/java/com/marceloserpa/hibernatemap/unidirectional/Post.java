@@ -1,5 +1,6 @@
 package com.marceloserpa.hibernatemap.unidirectional;
 
+import jakarta.persistence.JoinColumn;
 import java.util.ArrayList;
 import java.util.List;
 import jakarta.persistence.CascadeType;
@@ -19,6 +20,7 @@ public class Post {
   private Long id;
   private String title;
 
+  @JoinColumn(name = "post_id")
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
   private List<PostComment> comments = new ArrayList<>();
 
