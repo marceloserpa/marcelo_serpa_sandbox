@@ -16,5 +16,8 @@
         <mapping class="com.marceloserpa.hibernatemap.unidirectional.Post"></mapping>
         <mapping class="com.marceloserpa.hibernatemap.unidirectional.PostComment"></mapping>
 
+        <mapping class="com.marceloserpa.hibernatemap.bidirectional.BiPost"></mapping>
+        <mapping class="com.marceloserpa.hibernatemap.bidirectional.BiPostComment"></mapping>
+
     </session-factory>
 </hibernate-configuration>

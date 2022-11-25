@@ -1,4 +1,4 @@
-package com.marceloserpa.hibernatemap;
+package com.marceloserpa.hibernatemap.unidirectional;
 
 import com.marceloserpa.hibernatemap.unidirectional.Post;
 import com.marceloserpa.hibernatemap.unidirectional.PostComment;
