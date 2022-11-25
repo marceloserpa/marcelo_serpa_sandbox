@@ -47,6 +47,18 @@ public class Main {
 
         System.out.println(comment);
         System.out.println(comment.getBipost());
+        System.out.println("----------------------------------");
+
+        var biPost = posts.get(0);
+        var firstComment = biPost.getComments().get(0);
+        biPost.removeComment(firstComment);
+
+        posts = session.createQuery("from BiPost", BiPost.class).list();
+
+        for(BiPost post : posts) {
+            System.out.println(post);
+            System.out.println(post.getComments());
+        }
 
         session.getTransaction().commit();
         sessionFactory.close();
