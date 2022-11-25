@@ -27,11 +27,9 @@ public class Main {
 
         BiPost postEntity = new BiPost();
         postEntity.setTitle("My first post");
-        postEntity.setComments(List.of(
-            new BiPostComment("comment 1"),
-            new BiPostComment("comment 2"),
-            new BiPostComment("comment 3")
-        ));
+        postEntity.addComment(new BiPostComment("comment 1"));
+        postEntity.addComment(new BiPostComment("comment 2"));
+        postEntity.addComment(new BiPostComment("comment 3"));
 
         session.save(postEntity);
 
@@ -41,6 +39,14 @@ public class Main {
             System.out.println(post);
             System.out.println(post.getComments());
         }
+
+        System.out.println("--------------");
+
+        var comment = session.createQuery("from BiPostComment where id = 1",
+            BiPostComment.class).getSingleResult();
+
+        System.out.println(comment);
+        System.out.println(comment.getBipost());
 
         session.getTransaction().commit();
         sessionFactory.close();
