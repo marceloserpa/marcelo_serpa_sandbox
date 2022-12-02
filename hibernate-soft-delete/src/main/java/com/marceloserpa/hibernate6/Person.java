@@ -4,7 +4,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import org.hibernate.annotations.SQLDelete;
 
+@SQLDelete(sql = "UPDATE person SET deleted = true WHERE id=?")
 @Entity
 public class Person {
 
@@ -13,6 +15,8 @@ public class Person {
     private long id;
     private String name;
     private String lastname;
+
+    private Boolean deleted;
 
     public long getId() {
         return id;
@@ -36,5 +40,13 @@ public class Person {
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 }
