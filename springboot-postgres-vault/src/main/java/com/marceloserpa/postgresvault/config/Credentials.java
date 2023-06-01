@@ -1,4 +1,4 @@
-package com.marceloserpa.postgresvault;
+package com.marceloserpa.postgresvault.config;
 
 public class Credentials {
 

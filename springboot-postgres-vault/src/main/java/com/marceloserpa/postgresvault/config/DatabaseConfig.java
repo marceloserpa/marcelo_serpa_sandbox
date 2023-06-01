@@ -1,4 +1,4 @@
-package com.marceloserpa.postgresvault;
+package com.marceloserpa.postgresvault.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.dbcp.BasicDataSource;
@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.vault.core.VaultOperations;
-import org.springframework.vault.core.VaultTemplate;
 import org.springframework.vault.support.VaultResponse;
 
 import javax.sql.DataSource;
@@ -16,7 +15,6 @@ import javax.sql.DataSource;
 
 
 @Configuration
-@EnableJdbcRepositories
 public class DatabaseConfig {
 
 

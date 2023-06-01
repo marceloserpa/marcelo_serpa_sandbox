@@ -1,4 +1,4 @@
-package com.marceloserpa.postgresvault;
+package com.marceloserpa.postgresvault.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.vault.authentication.ClientAuthentication;
@@ -7,7 +7,7 @@ import org.springframework.vault.client.VaultEndpoint;
 import org.springframework.vault.config.AbstractVaultConfiguration;
 
 @Configuration
-public class AppConfig extends AbstractVaultConfiguration {
+public class VaultConfig extends AbstractVaultConfiguration {
 
     /**
      * Specify an endpoint for connecting to Vault.

@@ -1,4 +1,4 @@
-package com.marceloserpa.postgresvault;
+package com.marceloserpa.postgresvault.api;
 
 
 import org.springframework.web.bind.annotation.RequestMapping;
