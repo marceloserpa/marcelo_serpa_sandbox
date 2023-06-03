@@ -1,0 +1,16 @@
+version: '3.5'
+
+services:
+
+  spring-poc-postgres:
+    image:  postgres:14.3
+    restart: always
+    environment:
+      POSTGRES_USER: marceloserpa
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: books
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - 5442:5432
+
