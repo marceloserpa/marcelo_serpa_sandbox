@@ -13,3 +13,19 @@ services:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - 5442:5432
+
+  vault_dev:
+    image: hashicorp/vault:1.13.2
+    restart: always
+    volumes:
+      - /vault/data
+      - /etc/vault/logs
+    ports:
+      - "8200:8200/tcp"
+    environment:
+      VAULT_ADDR: http://localhost:8200
+
+    cap_add:
+      - IPC_LOCK
+    container_name: vault_dev
+    entrypoint: "vault server -dev"

@@ -26,6 +26,6 @@ public class VaultConfig extends AbstractVaultConfiguration {
      */
     @Override
     public ClientAuthentication clientAuthentication() {
-        return new TokenAuthentication("hvs.aBCpS0zxvk3uA24BXDiV63jE");
+        return new TokenAuthentication("root");
     }
 }
