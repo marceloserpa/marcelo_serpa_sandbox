@@ -1,4 +1,4 @@
-package com.marceloserpa.springreactortomvc.impl;
+package com.marceloserpa.springreactortomvc.impl.blocking;
 
 import org.springframework.data.annotation.Id;
 

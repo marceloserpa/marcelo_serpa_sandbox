@@ -1,4 +1,4 @@
-package com.marceloserpa.springreactortomvc.impl;
+package com.marceloserpa.springreactortomvc.impl.reactive;
 
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
