@@ -20,4 +20,8 @@ public class BookService {
     public void save(BookEntity entity) {
         bookRepository.save(entity);
     }
+
+    public void update(BookEntity entity) {
+        bookRepository.save(entity);
+    }
 }

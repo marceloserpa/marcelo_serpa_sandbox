@@ -1,6 +1,7 @@
 package com.marceloserpa.springenvers;
 
 
+import jakarta.websocket.server.PathParam;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,6 +30,17 @@ public class BookController {
         entity.setTitle(book.title());
         entity.setAuthor(book.author());
         bookService.save(entity);
+    }
+
+    @PutMapping("/books/{id}")
+    public void update(@RequestBody Book book, @PathVariable("id") Long id) {
+        var entity = new BookEntity();
+        entity.setAuthor(book.author());
+        entity.setTitle(book.title());
+        entity.setId(id);
+        entity.setVersion(1L);
+        bookService.update(entity);
+
     }
 
 }
