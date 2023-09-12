@@ -1,8 +1,7 @@
 package com.marceloserpa.springenvers;
 
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,6 +21,14 @@ public class BookController {
         return bookService.getAll().stream()
                 .map(bookEntity -> new Book(bookEntity.getId(), bookEntity.getTitle(), bookEntity.getAuthor()))
                 .collect(Collectors.toList());
+    }
+
+    @PostMapping("/books")
+    public void create (@RequestBody Book book) {
+        var entity= new BookEntity();
+        entity.setTitle(book.title());
+        entity.setAuthor(book.author());
+        bookService.save(entity);
     }
 
 }

@@ -17,4 +17,7 @@ public class BookService {
         return bookRepository.findAll();
     }
 
+    public void save(BookEntity entity) {
+        bookRepository.save(entity);
+    }
 }

@@ -2,8 +2,12 @@ package com.marceloserpa.springenvers;
 
 
 import jakarta.persistence.*;
+import org.hibernate.envers.AuditTable;
+import org.hibernate.envers.Audited;
 
 @Entity(name = "book")
+@Audited
+@AuditTable(value = "au_book")
 public class BookEntity {
 
     @Column(name = "id", unique = true)
@@ -16,6 +20,9 @@ public class BookEntity {
 
     @Column(name = "author")
     private String author;
+
+    @Version
+    private Long version;
 
     public Long getId() {
         return id;
@@ -39,5 +46,13 @@ public class BookEntity {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 }
