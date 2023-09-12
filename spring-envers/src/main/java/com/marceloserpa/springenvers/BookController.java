@@ -38,7 +38,6 @@ public class BookController {
         entity.setAuthor(book.author());
         entity.setTitle(book.title());
         entity.setId(id);
-        entity.setVersion(1L);
         bookService.update(entity);
 
     }

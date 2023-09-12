@@ -22,6 +22,8 @@ public class BookService {
     }
 
     public void update(BookEntity entity) {
+        var book = bookRepository.findById(entity.getId());
+        entity.setVersion(book.get().getVersion());
         bookRepository.save(entity);
     }
 }
