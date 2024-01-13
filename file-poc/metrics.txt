@@ -1,0 +1,4 @@
+marcelo;10
+machine;8
+john;9.4
+marcelo;3
