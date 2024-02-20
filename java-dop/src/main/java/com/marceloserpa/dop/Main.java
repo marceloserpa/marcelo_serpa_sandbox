@@ -3,6 +3,7 @@ package com.marceloserpa.dop;
 import java.nio.file.Path;
 
 public class Main {
+    
     public static void main(String[] args) {
         var option = new Option.InputFile(Path.of("input.txt"));
 
