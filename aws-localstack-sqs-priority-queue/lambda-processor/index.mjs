@@ -1,4 +1,17 @@
+
+import { SQSClient, GetQueueAttributesCommand } from '@aws-sdk/client-sqs';
+
+
+const sqsClient = new SQSClient();
+
+
+const queueUrl = 'http://localhost:4566/000000000000/my-messages-priority'; 
+
+
+
 export const handler = async (event) => {
+
+
 
 	console.log("++++++++++++++++++==")
 
@@ -14,6 +27,24 @@ export const handler = async (event) => {
 
 		if(queue === mainQueue) {
 			console.log('main --')
+			
+			const getAttributesParams = {
+				QueueUrl: queueUrl,
+				AttributeNames: ['ApproximateNumberOfMessages'],
+			  };
+		  
+			  const getAttributesCommand = new GetQueueAttributesCommand(getAttributesParams);
+		  
+			  const getAttributesResult = await sqsClient.send(getAttributesCommand);
+		  
+			  
+			  const approximateNumberOfMessages = getAttributesResult.Attributes.ApproximateNumberOfMessages;
+			  if (approximateNumberOfMessages > 0) {
+				console.log(`priority queue has messages: ${approximateNumberOfMessages}`);
+			  } else {
+				console.log('priority queue is empty.');
+			  }
+
 		} else if (queue === priorityQueue) {
 			console.log('Processing priority queue --')
 
