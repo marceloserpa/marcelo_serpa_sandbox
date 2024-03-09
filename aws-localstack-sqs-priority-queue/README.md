@@ -20,6 +20,8 @@ awslocal sqs create-queue --queue-name my-messages
 http://sqs.us-east-1.localhost.localstack.cloud:4566/000000000000/my-messages
 
 
+http://sqs.us-east-1.localhost.localstack.cloud:4566/000000000000/my-messages
+
 awslocal sqs get-queue-attributes --queue-url http://sqs.us-east-1.localhost.localstack.cloud:4566/000000000000/my-messages --attribute-names QueueArn
 
 {
@@ -36,7 +38,7 @@ awslocal lambda create-event-source-mapping --function-name lambda-sqs-processor
 
 
 
-awslocal sqs send-message --queue-url http://sqs.us-east-1.localhost.localstack.cloud:4566/000000000000/my-messages --message-body "Hello, Marcelo!"
+awslocal sqs send-message --queue-url http://sqs.us-east-1.localhost.localstack.cloud:4566/000000000000/my-messages --message-body 'Hello, Marcelo!'
 
 
 aws logs create-log-group --log-group-name /aws/lambda/lambda-sqs-processor
