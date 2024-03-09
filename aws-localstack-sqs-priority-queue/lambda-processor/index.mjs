@@ -1,12 +1,4 @@
 export const handler = async (event) => {
-	/*
-	const messages = event.Records.map(record => record.body);
-	
-	messages.forEach(message => {
-		console.log(message);
-	});
-	return messages;
-	*/
 
 	console.log("++++++++++++++++++==")
 
@@ -17,12 +9,16 @@ export const handler = async (event) => {
 
 	for(var i=0; i<event.Records.length;i++){
 
-		console.log("processing")
+		console.log("Loading messages")
 		var queue = event.Records[i].eventSourceARN.split(':').pop() 
+
 		if(queue === mainQueue) {
 			console.log('main --')
 		} else if (queue === priorityQueue) {
-			console.log('priority --')
+			console.log('Processing priority queue --')
+
+			console.log(event.Records[i].body)
+
 		} else {
 			console.log('unknown')
 		}
