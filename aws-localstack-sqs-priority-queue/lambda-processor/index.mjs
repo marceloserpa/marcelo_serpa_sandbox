@@ -5,7 +5,7 @@ import { SQSClient, GetQueueAttributesCommand } from '@aws-sdk/client-sqs';
 const sqsClient = new SQSClient();
 
 
-const queueUrl = 'http://localhost:4566/000000000000/my-messages-priority'; 
+const queueUrl = 'http://sqs.us-east-1.localhost.localstack.cloud:4566/000000000000/my-messages-priority'; 
 
 
 
