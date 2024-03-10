@@ -44,3 +44,8 @@ awslocal sqs send-message --queue-url http://sqs.us-east-1.localhost.localstack.
 aws logs create-log-group --log-group-name /aws/lambda/lambda-sqs-processor
 
 awslocal --region=eu-west-1 logs tail '/aws/lambda/lambda-sqs-processor'
+
+
+
+
+watch -n 1 ''
