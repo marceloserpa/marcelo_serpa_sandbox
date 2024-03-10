@@ -1,18 +1,17 @@
 
 import { SQSClient, GetQueueAttributesCommand } from '@aws-sdk/client-sqs';
-
+import {setTimeout} from "timers/promises";
 
 const sqsClient = new SQSClient();
 
-const queueUrl = 'http://sqs.us-east-1.localhost.localstack.cloud:4566/000000000000/my-messages-priority'; 
+const mainQueueUrl = 'http://sqs.us-east-1.localhost.localstack.cloud:4566/000000000000/my-messages-main'; 
+const priorityQueueUrl = 'http://sqs.us-east-1.localhost.localstack.cloud:4566/000000000000/my-messages-priority'; 
 
 const mainQueue = "my-messages-main";
 
 const priorityQueue = "my-messages-priority";
 
 export const handler = async (event) => {
-
-	console.log("Lambda Triggered")
 
 	const failedMessageIds = [];  
 
@@ -24,10 +23,10 @@ export const handler = async (event) => {
 			await process(event.Records[i], 'Priority');
 
 		} else if(queue === mainQueue) {
-			const approximateNumberOfMessages = await getTotalMessageFromPriorityQueue();
+			const approximateNumberOfMessages = await getTotalMessageFromPriorityQueue(priorityQueueUrl);
 			
 			if (approximateNumberOfMessages > 0) {
-				console.log(`# Main Queue: priority queue has messages: ${approximateNumberOfMessages} return message to Main Queue`);
+				console.log(`##### ERROR : Main Queue: message can't be processed now because priority queue has messages: ${approximateNumberOfMessages}`);
 				failedMessageIds.push(event.Records[i].messageId);
 
 			} else {
@@ -40,23 +39,30 @@ export const handler = async (event) => {
 
 	}
 
-	return {    
-		batchItemFailures: failedMessageIds.map(id => {      
-		  return {        
-			itemIdentifier: id      
-		  }    
-		})
-	  };
+	if(failedMessageIds > 0) {
+		return {    
+			batchItemFailures: failedMessageIds.map(id => {      
+				return {        
+				itemIdentifier: id      
+				}    
+			})
+			};
+	}
+
+	return ;
+
+
 };
 
 const process = async (record, origin) => {
-	console.log(`# ${origin} Queue:  ${record.body}`);
+	await setTimeout(1000);
+	console.log(`${record.body} = ${origin} Queue completed`);
 };
 
-const getTotalMessageFromPriorityQueue = async () => {
+const getTotalMessageFromPriorityQueue = async (queueUrl) => {
 	const getAttributesParams = {
 		QueueUrl: queueUrl,
-		AttributeNames: ['ApproximateNumberOfMessages'],
+		AttributeNames: ['ApproximateNumberOfMessages', 'ApproximateNumberOfMessagesNotVisible'],
 	};
 
 	const getAttributesCommand = new GetQueueAttributesCommand(getAttributesParams);
