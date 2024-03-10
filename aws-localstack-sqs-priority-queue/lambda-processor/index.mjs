@@ -4,57 +4,66 @@ import { SQSClient, GetQueueAttributesCommand } from '@aws-sdk/client-sqs';
 
 const sqsClient = new SQSClient();
 
-
 const queueUrl = 'http://sqs.us-east-1.localhost.localstack.cloud:4566/000000000000/my-messages-priority'; 
 
+const mainQueue = "my-messages-main";
 
+const priorityQueue = "my-messages-priority";
 
 export const handler = async (event) => {
 
+	console.log("Lambda Triggered")
 
+	const failedMessageIds = [];  
 
-	console.log("++++++++++++++++++==")
+	for(var i=0; i<event.Records.length; i++){
 
-	const mainQueue = "my-messages-main";
-	const priorityQueue = "my-messages-priority";
+		const queue = extractQueueName(event.Records[i]);
 
-	const messages = event.Records.map(record => record.body);
+		if (queue === priorityQueue) {
+			await process(event.Records[i], 'Priority');
 
-	for(var i=0; i<event.Records.length;i++){
-
-		console.log("Loading messages")
-		var queue = event.Records[i].eventSourceARN.split(':').pop() 
-
-		if(queue === mainQueue) {
-			console.log('main --')
+		} else if(queue === mainQueue) {
+			const approximateNumberOfMessages = await getTotalMessageFromPriorityQueue();
 			
-			const getAttributesParams = {
-				QueueUrl: queueUrl,
-				AttributeNames: ['ApproximateNumberOfMessages'],
-			  };
-		  
-			  const getAttributesCommand = new GetQueueAttributesCommand(getAttributesParams);
-		  
-			  const getAttributesResult = await sqsClient.send(getAttributesCommand);
-		  
-			  
-			  const approximateNumberOfMessages = getAttributesResult.Attributes.ApproximateNumberOfMessages;
-			  if (approximateNumberOfMessages > 0) {
-				console.log(`priority queue has messages: ${approximateNumberOfMessages}`);
-			  } else {
-				console.log('priority queue is empty.');
-			  }
+			if (approximateNumberOfMessages > 0) {
+				console.log(`# Main Queue: priority queue has messages: ${approximateNumberOfMessages} return message to Main Queue`);
+				failedMessageIds.push(event.Records[i].messageId);
 
-		} else if (queue === priorityQueue) {
-			console.log('Processing priority queue --')
-
-			console.log(event.Records[i].body)
+			} else {
+				await process(event.Records[i], 'Main');
+			}
 
 		} else {
-			console.log('unknown')
+			console.log('# Unknown Queue');
 		}
 
 	}
 
-	return messages;
+	return {    
+		batchItemFailures: failedMessageIds.map(id => {      
+		  return {        
+			itemIdentifier: id      
+		  }    
+		})
+	  };
 };
+
+const process = async (record, origin) => {
+	console.log(`# ${origin} Queue:  ${record.body}`);
+};
+
+const getTotalMessageFromPriorityQueue = async () => {
+	const getAttributesParams = {
+		QueueUrl: queueUrl,
+		AttributeNames: ['ApproximateNumberOfMessages'],
+	};
+
+	const getAttributesCommand = new GetQueueAttributesCommand(getAttributesParams);
+
+	const getAttributesResult = await sqsClient.send(getAttributesCommand);
+		
+	return getAttributesResult.Attributes.ApproximateNumberOfMessages;
+};
+
+const extractQueueName = (record) => record.eventSourceARN.split(':').pop() 
