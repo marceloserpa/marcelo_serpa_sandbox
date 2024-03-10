@@ -4,8 +4,10 @@
 MAIN_QUEUE_NAME=my-messages-main
 PRIORITY_QUEUE_NAME=my-messages-priority
 
+cd ../lambda-processor/
+
 rm function.zip \
-    && zip function.zip index.mjs
+    && zip -r function.zip .
 
 echo 'Packaged code!'
 
