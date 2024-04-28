@@ -6,22 +6,17 @@ services:
     image: postgres
     restart: always
     container_name: outbox_poc_postgres
+    networks:
+      - broker-kafka
     environment:
-      POSTGRES_USER: marceloserpa
-      POSTGRES_PASSWORD: 123456
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
       POSTGRES_DB: outbox-poc
     command: ['postgres', '-c', 'wal_level=logical']
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - 5442:5432
-
-  adminer:
-    image: adminer
-    container_name: outbox_poc_pgadmin
-    restart: always
-    ports:
-      - 9080:8080
 
   zookeeper:
     image: confluentinc/cp-zookeeper:7.4.1
@@ -48,7 +43,7 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1   
-         
+
   kafdrop:
     image: obsidiandynamics/kafdrop:latest
     networks: 
@@ -60,6 +55,27 @@ services:
     environment:
       KAFKA_BROKERCONNECT: kafka:29092
 
+  debezium:
+    image: debezium/connect:latest
+    restart: always
+    container_name: outbox_poc_debezium
+    hostname: debezium
+    networks:
+      - broker-kafka    
+    depends_on:
+      - db
+      - kafka
+    ports:
+      - '8083:8083'
+    environment:
+      BOOTSTRAP_SERVERS: kafka:29092
+      GROUP_ID: 1
+      CONFIG_STORAGE_TOPIC: connect_configs
+      STATUS_STORAGE_TOPIC: connect_statuses
+      OFFSET_STORAGE_TOPIC: connect_offsets
+      KEY_CONVERTER: org.apache.kafka.connect.storage.StringConverter
+      VALUE_CONVERTER: org.apache.kafka.connect.storage.StringConverter
+      ENABLE_DEBEZIUM_SCRIPTING: 'true'      
 
 volumes:
   init.sh:
