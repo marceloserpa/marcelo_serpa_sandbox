@@ -17,13 +17,7 @@ public class TenantInterceptor implements HandlerInterceptor {
         Long tenantId = Optional.ofNullable(request.getHeader("tenantId"))
                 .map(Long::parseLong)
                 .orElseThrow(() -> new RuntimeException("tenantId header is required."));
-
-        TenantDatabase database = TenantDistribution.lookupDatabase(tenantId)
-                .orElseThrow(() -> new RuntimeException("not found database for this tenantId."));
-
-        TenantContextHolder.setDatabase(database);
         TenantContextHolder.setTenantId(tenantId);
-
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }
 }

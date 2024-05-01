@@ -24,7 +24,8 @@ public class UserService {
     private ObjectMapper mapper;
 
     public List<User> getAll(){
-        return Streamable.of(userRepository.findAll()).toList() ;
+        var tenantId = TenantContextHolder.getTenantId();
+        return Streamable.of(userRepository.findByTenantId(tenantId)).toList() ;
     }
 
     @Transactional
