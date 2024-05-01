@@ -7,7 +7,7 @@
       "database.dbname": "outbox-poc",
       "database.history.kafka.bootstrap.servers": "kafka:9092",
       "database.history.kafka.topic": "schema-changes.outbox",
-      "database.hostname": "db",
+      "database.hostname": "database01",
       "database.password": "postgres",
       "database.port": "5432",
       "database.user": "postgres",

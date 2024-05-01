@@ -2,7 +2,7 @@ version: '3.1'
 
 services:
 
-  db:
+  database01:
     image: postgres
     restart: always
     container_name: outbox_poc_postgres
@@ -14,7 +14,7 @@ services:
       POSTGRES_DB: outbox-poc
     command: ['postgres', '-c', 'wal_level=logical']
     volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./database01-init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - 5442:5432
 
@@ -63,7 +63,7 @@ services:
     networks:
       - broker-kafka    
     depends_on:
-      - db
+      - database01
       - kafka
     ports:
       - '8083:8083'
