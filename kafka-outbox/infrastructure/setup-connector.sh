@@ -1,7 +1,6 @@
 #!/bin/bash
 
 connectors=("database01-source-connector" "database02-source-connector")
-#connectors=("database01-source-connector")
 
 for connector in ${connectors[@]}; do
     echo ">> Starting $connector setup"
