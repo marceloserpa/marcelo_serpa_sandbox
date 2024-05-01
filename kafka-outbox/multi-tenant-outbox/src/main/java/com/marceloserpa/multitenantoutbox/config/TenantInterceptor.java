@@ -22,6 +22,7 @@ public class TenantInterceptor implements HandlerInterceptor {
                 .orElseThrow(() -> new RuntimeException("not found database for this tenantId."));
 
         TenantContextHolder.setDatabase(database);
+        TenantContextHolder.setTenantId(tenantId);
 
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }

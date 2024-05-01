@@ -1,4 +1,4 @@
-package com.marceloserpa.multitenantoutbox;
+package com.marceloserpa.multitenantoutbox.user;
 
 import org.springframework.data.repository.CrudRepository;
 
