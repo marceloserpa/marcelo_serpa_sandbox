@@ -15,11 +15,11 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @GetMapping
     public List<User> getUsers(){
-        return Streamable.of(userRepository.findAll()).toList() ;
+        return userService.getAll();
     }
 
 
