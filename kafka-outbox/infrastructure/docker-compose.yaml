@@ -5,7 +5,7 @@ services:
   database01:
     image: postgres
     restart: always
-    container_name: outbox_poc_postgres
+    container_name: outbox_poc_postgres01
     networks:
       - broker-kafka
     environment:
@@ -17,6 +17,22 @@ services:
       - ./database01-init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - 5442:5432
+
+  database02:
+    image: postgres
+    restart: always
+    container_name: outbox_poc_postgres02
+    networks:
+      - broker-kafka
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: outbox-poc
+    command: ['postgres', '-c', 'wal_level=logical']
+    volumes:
+      - ./database02-init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - 5452:5432
 
   zookeeper:
     image: confluentinc/cp-zookeeper:7.4.1
@@ -64,6 +80,7 @@ services:
       - broker-kafka    
     depends_on:
       - database01
+      - database02
       - kafka
     ports:
       - '8083:8083'

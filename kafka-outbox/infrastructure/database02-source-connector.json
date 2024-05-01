@@ -1,0 +1,26 @@
+{
+    "name": "database02-source-connector",
+    "config": {
+      "name": "database02-source-connector",
+      "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+
+      "database.dbname": "outbox-poc",
+      "database.history.kafka.bootstrap.servers": "kafka:9092",
+      "database.history.kafka.topic": "schema-changes.outbox",
+      "database.hostname": "database02",
+      "database.password": "postgres",
+      "database.port": "5432",
+      "database.user": "postgres",
+      
+      "plugin.name": "pgoutput",
+      "table.include.list": "public.outbox",
+      "tasks.max": "1",
+
+      "topic.creation.default.cleanup.policy": "delete",
+      "topic.creation.default.partitions": "1",
+      "topic.creation.default.replication.factor": "1",
+      "topic.creation.default.retention.ms": "604800000",
+      "topic.creation.enable": "true",
+      "topic.prefix": "postgres"
+    }
+  }
