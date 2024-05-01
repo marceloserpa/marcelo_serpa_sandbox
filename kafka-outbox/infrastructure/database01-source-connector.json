@@ -1,7 +1,7 @@
 {
-    "name": "outbox-db-connector",
+    "name": "database01-source-connector",
     "config": {
-      "name": "outbox-db-connector",
+      "name": "database01-source-connector",
       "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
 
       "database.dbname": "outbox-poc",
