@@ -1,4 +1,10 @@
 package com.marceloserpa.multitenantoutbox;
 
-public record User(long tentantId, long userId, String username) {
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
+
+@Table("users")
+public record User(@Column("tenant_id") Long tenantId,
+        @Column("id") Long userId,
+        String username) {
 }
