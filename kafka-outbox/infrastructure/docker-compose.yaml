@@ -3,7 +3,7 @@ version: '3.1'
 services:
 
   database01:
-    image: postgres
+    image: postgres:14.2
     restart: always
     container_name: outbox_poc_postgres01
     networks:
@@ -19,7 +19,7 @@ services:
       - 5442:5432
 
   database02:
-    image: postgres
+    image: postgres:14.2
     restart: always
     container_name: outbox_poc_postgres02
     networks:
@@ -61,7 +61,7 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1   
 
   kafdrop:
-    image: obsidiandynamics/kafdrop:latest
+    image: obsidiandynamics/kafdrop:4.0.1
     networks: 
       - broker-kafka
     depends_on:
@@ -72,7 +72,7 @@ services:
       KAFKA_BROKERCONNECT: kafka:29092
 
   debezium:
-    image: debezium/connect:latest
+    image: debezium/connect:2.5.0.Final
     restart: always
     container_name: outbox_poc_debezium
     hostname: debezium
