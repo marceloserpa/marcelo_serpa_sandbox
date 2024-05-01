@@ -14,7 +14,7 @@ services:
       POSTGRES_DB: outbox-poc
     command: ['postgres', '-c', 'wal_level=logical']
     volumes:
-      - ./database01-init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./sql-scripts/database01-init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - 5442:5432
 
@@ -30,7 +30,7 @@ services:
       POSTGRES_DB: outbox-poc
     command: ['postgres', '-c', 'wal_level=logical']
     volumes:
-      - ./database02-init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./sql-scripts/database02-init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - 5452:5432
 
