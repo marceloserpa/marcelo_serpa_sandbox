@@ -4,6 +4,12 @@ CREATE TABLE person (
     lastname VARCHAR(50) NOT NULL
 );
 
+CREATE TABLE user (
+    id serial PRIMARY KEY,
+    tenant_id INTEGER,
+    username VARCHAR (50) NOT NULL
+);
+
 
 create table outbox (
     id serial PRIMARY KEY,
