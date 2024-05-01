@@ -62,6 +62,7 @@ services:
 
   kafdrop:
     image: obsidiandynamics/kafdrop:4.0.1
+    container_name: outbox_poc_kafdrop
     networks: 
       - broker-kafka
     depends_on:
