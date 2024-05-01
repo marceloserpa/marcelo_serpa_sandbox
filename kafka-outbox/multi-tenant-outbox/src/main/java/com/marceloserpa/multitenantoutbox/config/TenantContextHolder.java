@@ -1,4 +1,4 @@
-package com.marceloserpa.multitenantoutbox.databaseconfig;
+package com.marceloserpa.multitenantoutbox.config;
 
 public class TenantContextHolder {
 
