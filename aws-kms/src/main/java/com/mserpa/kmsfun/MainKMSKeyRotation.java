@@ -17,7 +17,8 @@ public class MainKMSKeyRotation {
         System.out.println("KMS FUN");
 
         var sensibledata = "hello";
-        var keyId = "arn:aws:kms:us-east-1:000000000000:key/4d80a39a-c33c-4edb-afad-c80b7c4955b0";
+        var originalKeyId = "arn:aws:kms:us-east-1:000000000000:key/4d80a39a-c33c-4edb-afad-c80b7c4955b0";
+        var newKeyId      = "arn:aws:kms:us-east-1:000000000000:key/d0b7ec1c-a3c1-4c4b-8cbe-b385ad84a9a3";
 
         AwsBasicCredentials credentials = AwsBasicCredentials.create("123456", "qwerty");
         StaticCredentialsProvider credentialsProvider = StaticCredentialsProvider.create(credentials);
@@ -30,16 +31,20 @@ public class MainKMSKeyRotation {
 
         var kmsCrypto = new KmsCrypto(kmsClient);
 
-        var encrypted = kmsCrypto.encrypt(keyId, sensibledata);
+        var encrypted = kmsCrypto.encrypt(originalKeyId, sensibledata);
 
         System.out.println("ENCRYPTED: " + encrypted);
 
-        var decrypted = kmsCrypto.decrypt(keyId, encrypted);
+        var decrypted = kmsCrypto.decrypt(newKeyId, encrypted);
 
         System.out.println("DECRYPTED: " + decrypted);
 
-        System.out.println(encrypted);
+        System.out.println("ROTATE");
 
+        var encryptedRotated = kmsCrypto.rotate(originalKeyId, newKeyId, encrypted);
+        decrypted = kmsCrypto.decrypt(newKeyId, encryptedRotated);
+
+        System.out.println("DECRYPTED: " + decrypted);
 
         kmsClient.close();
 

@@ -52,7 +52,10 @@ public class KmsCrypto {
             e.printStackTrace();
         }
         return "";
+    }
 
-
+    public SdkBytes rotate(String originalKeyId, String newKeyId, SdkBytes encryptedText){
+        var decoded = decrypt(originalKeyId, encryptedText);
+        return encrypt(newKeyId, decoded);
     }
 }
