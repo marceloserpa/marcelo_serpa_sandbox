@@ -2,19 +2,17 @@ package com.mserpa.kmsfun;
 
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
-import software.amazon.awssdk.auth.credentials.EnvironmentVariableCredentialsProvider;
 import software.amazon.awssdk.core.SdkBytes;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.kms.KmsClient;
-import software.amazon.awssdk.services.kms.endpoints.KmsEndpointProvider;
 import software.amazon.awssdk.services.kms.model.EncryptRequest;
 import software.amazon.awssdk.services.kms.model.EncryptResponse;
+import software.amazon.awssdk.services.kms.model.EncryptionAlgorithmSpec;
 import software.amazon.awssdk.services.kms.model.KmsException;
-import software.amazon.awssdk.services.kms.model.ListKeysRequest;
-import software.amazon.awssdk.services.kms.paginators.ListKeysIterable;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Base64;
 
 public class Main {
 
@@ -25,11 +23,10 @@ public class Main {
         System.out.println("KMS FUN");
 
         var sensibledata = "hello";
-
+        var keyId = "arn:aws:kms:us-east-1:000000000000:key/4d80a39a-c33c-4edb-afad-c80b7c4955b0";
 
         AwsBasicCredentials credentials = AwsBasicCredentials.create("123456", "qwerty");
         StaticCredentialsProvider credentialsProvider = StaticCredentialsProvider.create(credentials);
-
 
         KmsClient kmsClient = KmsClient.builder()
                 .credentialsProvider(credentialsProvider)
@@ -37,36 +34,10 @@ public class Main {
                 .endpointOverride(new URI(ENDPOINT_URL))
                 .build();
 
-
-        listAllKeys(kmsClient);
-
-        /*
-        var text = sensibledata;
-        var encrypted = "";
-        var keyId = "arn:aws:kms:us-east-1:000000000000:key/4d80a39a-c33c-4edb-afad-c80b7c4955b0";
+        var encrypted = encrypt(kmsClient, keyId, sensibledata);
 
 
-
-        try {
-            SdkBytes myBytes = SdkBytes.fromUtf8String(text);
-            EncryptRequest encryptRequest = EncryptRequest.builder()
-                    .keyId(keyId)
-                    .plaintext(myBytes)
-                    .build();
-
-            EncryptResponse response = kmsClient.encrypt(encryptRequest);
-            String algorithm = response.encryptionAlgorithm().toString();
-            System.out.println("The string was encrypted with algorithm " + algorithm + ".");
-
-            // Get the encrypted data.
-            SdkBytes encryptedData = response.ciphertextBlob();
-            encrypted = encryptedData.toString();
-
-        } catch (KmsException e) {
-            e.printStackTrace();
-        }
-
-         */
+        System.out.println(encrypted);
 
 
         kmsClient.close();
@@ -74,21 +45,29 @@ public class Main {
 
     }
 
-
-    public static void listAllKeys(KmsClient kmsClient) {
+    public static String encrypt(KmsClient kmsClient, String keyId, String plainText){
         try {
-            ListKeysRequest listKeysRequest = ListKeysRequest.builder()
-                    .limit(15)
+            SdkBytes myBytes = SdkBytes.fromUtf8String(plainText);
+            EncryptRequest encryptRequest = EncryptRequest.builder()
+                    .keyId(keyId)
+                    .plaintext(myBytes)
+                    .encryptionAlgorithm(EncryptionAlgorithmSpec.SYMMETRIC_DEFAULT)
                     .build();
 
-            ListKeysIterable keysResponse = kmsClient.listKeysPaginator(listKeysRequest);
-            keysResponse.stream()
-                    .flatMap(r -> r.keys().stream())
-                    .forEach(key -> System.out
-                            .println(" The key ARN is: " + key.keyArn() + ". The key Id is: " + key.keyId()));
+            EncryptResponse response = kmsClient.encrypt(encryptRequest);
+            String algorithm = response.encryptionAlgorithm().toString();
+            System.out.println("The string was encrypted with algorithm " + algorithm + ".");
+
+            SdkBytes encryptedData = response.ciphertextBlob();
+
+            return Base64.getEncoder().encodeToString(encryptedData.asByteArray());
+
 
         } catch (KmsException e) {
             e.printStackTrace();
+            return null;
         }
     }
+
+
 }
