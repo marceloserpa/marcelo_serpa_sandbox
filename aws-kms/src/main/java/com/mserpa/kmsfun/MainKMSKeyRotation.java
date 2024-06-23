@@ -8,7 +8,7 @@ import software.amazon.awssdk.services.kms.KmsClient;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public class Main {
+public class MainKMSKeyRotation {
 
     private static final String ENDPOINT_URL = "http://localhost:4566";
     private static final Region DEFAULT_REGION = Region.US_EAST_1;
@@ -28,13 +28,13 @@ public class Main {
                 .endpointOverride(new URI(ENDPOINT_URL))
                 .build();
 
-        var kmsCrypto = new KmsCrypto();
+        var kmsCrypto = new KmsCrypto(kmsClient);
 
-        var encrypted = kmsCrypto.encrypt(kmsClient, keyId, sensibledata);
+        var encrypted = kmsCrypto.encrypt(keyId, sensibledata);
 
         System.out.println("ENCRYPTED: " + encrypted);
 
-        var decrypted = kmsCrypto.decrypt(kmsClient, keyId, encrypted);
+        var decrypted = kmsCrypto.decrypt(keyId, encrypted);
 
         System.out.println("DECRYPTED: " + decrypted);
 

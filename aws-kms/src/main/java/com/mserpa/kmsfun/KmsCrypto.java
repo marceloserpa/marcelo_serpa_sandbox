@@ -8,23 +8,27 @@ import java.nio.charset.StandardCharsets;
 
 public class KmsCrypto {
 
+    public static final EncryptionAlgorithmSpec ENCRYPTION_ALGORITHM = EncryptionAlgorithmSpec.SYMMETRIC_DEFAULT;
+    private KmsClient kmsClient;
 
-    public SdkBytes encrypt(KmsClient kmsClient, String keyId, String plainText){
+    public KmsCrypto(KmsClient kmsClient) {
+        this.kmsClient = kmsClient;
+    }
+
+
+    public SdkBytes encrypt(String keyId, String plainText){
         try {
             SdkBytes myBytes = SdkBytes.fromUtf8String(plainText);
             EncryptRequest encryptRequest = EncryptRequest.builder()
                     .keyId(keyId)
                     .plaintext(myBytes)
-                    .encryptionAlgorithm(EncryptionAlgorithmSpec.SYMMETRIC_DEFAULT)
+                    .encryptionAlgorithm(ENCRYPTION_ALGORITHM)
                     .build();
 
             EncryptResponse response = kmsClient.encrypt(encryptRequest);
             String algorithm = response.encryptionAlgorithm().toString();
             System.out.println("The string was encrypted with algorithm " + algorithm + ".");
 
-            //SdkBytes encryptedData = response.ciphertextBlob();
-
-            //return Base64.getEncoder().encodeToString(encryptedData.asByteArray());
             return response.ciphertextBlob();
 
         } catch (KmsException e) {
@@ -33,11 +37,12 @@ public class KmsCrypto {
         }
     }
 
-    public String decrypt(KmsClient kmsClient, String keyId, SdkBytes encryptedText){
+    public String decrypt(String keyId, SdkBytes encryptedText){
         try {
             DecryptRequest decryptRequest = DecryptRequest.builder()
                     .ciphertextBlob(encryptedText)
                     .keyId(keyId)
+                    .encryptionAlgorithm(ENCRYPTION_ALGORITHM)
                     .build();
 
             DecryptResponse decryptResponse = kmsClient.decrypt(decryptRequest);
