@@ -5,14 +5,11 @@ import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.core.SdkBytes;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.kms.KmsClient;
-import software.amazon.awssdk.services.kms.model.EncryptRequest;
-import software.amazon.awssdk.services.kms.model.EncryptResponse;
-import software.amazon.awssdk.services.kms.model.EncryptionAlgorithmSpec;
-import software.amazon.awssdk.services.kms.model.KmsException;
+import software.amazon.awssdk.services.kms.model.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Base64;
+import java.nio.charset.StandardCharsets;
 
 public class Main {
 
@@ -36,6 +33,11 @@ public class Main {
 
         var encrypted = encrypt(kmsClient, keyId, sensibledata);
 
+        System.out.println("ENCRYPTED: " + encrypted);
+
+        var decrypted = decrypt(kmsClient, keyId, encrypted);
+
+        System.out.println("DECRYPTED: " + decrypted);
 
         System.out.println(encrypted);
 
@@ -45,7 +47,7 @@ public class Main {
 
     }
 
-    public static String encrypt(KmsClient kmsClient, String keyId, String plainText){
+    public static SdkBytes encrypt(KmsClient kmsClient, String keyId, String plainText){
         try {
             SdkBytes myBytes = SdkBytes.fromUtf8String(plainText);
             EncryptRequest encryptRequest = EncryptRequest.builder()
@@ -58,15 +60,33 @@ public class Main {
             String algorithm = response.encryptionAlgorithm().toString();
             System.out.println("The string was encrypted with algorithm " + algorithm + ".");
 
-            SdkBytes encryptedData = response.ciphertextBlob();
+            //SdkBytes encryptedData = response.ciphertextBlob();
 
-            return Base64.getEncoder().encodeToString(encryptedData.asByteArray());
-
+            //return Base64.getEncoder().encodeToString(encryptedData.asByteArray());
+            return response.ciphertextBlob();
 
         } catch (KmsException e) {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static String decrypt(KmsClient kmsClient, String keyId, SdkBytes encryptedText){
+        try {
+            DecryptRequest decryptRequest = DecryptRequest.builder()
+                    .ciphertextBlob(encryptedText)
+                    .keyId(keyId)
+                    .build();
+
+            DecryptResponse decryptResponse = kmsClient.decrypt(decryptRequest);
+            return decryptResponse.plaintext().asString(StandardCharsets.UTF_8);
+
+        } catch (KmsException e) {
+            e.printStackTrace();
+        }
+        return "";
+
+
     }
 
 
