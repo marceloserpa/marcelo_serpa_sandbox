@@ -1,0 +1,103 @@
+version: '3.1'
+
+services:
+
+  database01:
+    image: postgres:14.2
+    restart: always
+    container_name: outbox_poc_postgres01
+    networks:
+      - broker-kafka
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: outbox-poc
+    command: ['postgres', '-c', 'wal_level=logical']
+    volumes:
+      - ./sql-scripts/database01-init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - 5442:5432
+
+  database02:
+    image: postgres:14.2
+    restart: always
+    container_name: outbox_poc_postgres02
+    networks:
+      - broker-kafka
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: outbox-poc
+    command: ['postgres', '-c', 'wal_level=logical']
+    volumes:
+      - ./sql-scripts/database02-init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - 5452:5432
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.4.1
+    container_name: outbox_poc_zookeeper
+    networks:
+      - broker-kafka
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  kafka:
+    image: confluentinc/cp-kafka:7.4.1
+    container_name: outbox_poc_kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - 9092:9092
+    networks:
+      - broker-kafka      
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1   
+
+  kafdrop:
+    image: obsidiandynamics/kafdrop:4.0.1
+    container_name: outbox_poc_kafdrop
+    networks: 
+      - broker-kafka
+    depends_on:
+      - kafka
+    ports:
+      - 19000:9000
+    environment:
+      KAFKA_BROKERCONNECT: kafka:29092
+
+  debezium:
+    image: debezium/connect:2.5.0.Final
+    restart: always
+    container_name: outbox_poc_debezium
+    hostname: debezium
+    networks:
+      - broker-kafka    
+    depends_on:
+      - database01
+      - database02
+      - kafka
+    ports:
+      - '8083:8083'
+    environment:
+      BOOTSTRAP_SERVERS: kafka:29092
+      GROUP_ID: 1
+      CONFIG_STORAGE_TOPIC: connect_configs
+      STATUS_STORAGE_TOPIC: connect_statuses
+      OFFSET_STORAGE_TOPIC: connect_offsets
+      KEY_CONVERTER: org.apache.kafka.connect.storage.StringConverter
+      VALUE_CONVERTER: org.apache.kafka.connect.storage.StringConverter
+      ENABLE_DEBEZIUM_SCRIPTING: 'true'      
+
+volumes:
+  init.sh:
+
+networks: 
+  broker-kafka:
+    driver: bridge     
