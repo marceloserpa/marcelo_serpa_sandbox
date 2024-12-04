@@ -6,7 +6,9 @@ import static io.gatling.javaapi.http.HttpDsl.*;
 import io.gatling.javaapi.core.*;
 import io.gatling.javaapi.http.*;
 
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.List;
+import java.util.Map;
+
 
 public class PersonAPISimulation extends Simulation {
 
@@ -25,13 +27,28 @@ public class PersonAPISimulation extends Simulation {
         return session;
     });
 
+    FeederBuilder<Object> idFeeder2 = listFeeder(List.of(
+        Map.of("id", "1"),
+        Map.of("id", "2"),
+        Map.of("id", "3")
+    )).circular();
+
+    ScenarioBuilder getusers = scenario("Get users").feed(idFeeder2).exec(
+            http("Get Person")
+                    .get("/person/#{id}")
+                    .check(status().is(200)),
+            pause(1)
+    );
+
     HttpProtocolBuilder httpProtocol =
         http.baseUrl("http://localhost:8080")
             .acceptHeader("application/json")
             .userAgentHeader("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/119.0");
     {
         setUp(
-            create.injectOpen(rampUsers(10).during(10))
+            create.injectOpen(constantUsersPerSec(10).during(20)),
+            getusers.injectOpen(
+                    constantUsersPerSec(500).during(60))
         ).protocols(httpProtocol);
     }
 
