@@ -42,6 +42,10 @@ public class Main {
 		System.out.println("Tom Jones costs USD " + book.getPrice());
 		System.out.println("Tom Jones costs EUR " + book.getPrice().convert("EUR"));
 		System.out.println("Tom Jones costs GBP " + book.getPrice().convert("GBP"));
+
+		System.out.println("Tom Jones costs USD " + book.getPrice());
+		System.out.println("Tom Jones costs EUR " + book.getPrice().convert("EUR"));
+		System.out.println("Tom Jones costs GBP " + book.getPrice().convert("GBP"));
 		System.out.println("---END OF PROBLEM 3---");
 		
 		
