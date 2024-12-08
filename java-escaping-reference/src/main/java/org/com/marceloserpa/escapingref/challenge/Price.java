@@ -1,5 +1,6 @@
 package org.com.marceloserpa.escapingref.challenge;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,7 +34,7 @@ public class Price {
 	}
 	
 	public Map<String,Double> getRates() {
-		return rates;
+		return new HashMap<>(this.rates);
 	}
 	
 }
