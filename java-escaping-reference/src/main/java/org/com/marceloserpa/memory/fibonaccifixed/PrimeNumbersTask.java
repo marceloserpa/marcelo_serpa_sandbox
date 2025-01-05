@@ -5,20 +5,41 @@ import java.util.List;
 public class PrimeNumbersTask implements Runnable {
 
 	private List<Integer> primes = new ArrayList<Integer>();
-	private Integer lastNumberChecked;
+	private Integer lastNumberChecked1;
+	private int lastNumberChecked2;
 	private Integer lastNumberRetrieved = 0;
 	private NumberChecker checker;
 	private Boolean finished;
 
-	private void generateNextPrime() {
+	private int targetVersion = 1;
+
+	public void setTargetVersion(int version){
+		this.targetVersion = version;
+	}
+
+
+	private void generateNextPrime1() {
 
 		//only the add really needs to be synchronized
 		synchronized (this) {
-			Integer testNumber = lastNumberChecked + 1;
-			while (!checker.isPrime(testNumber)) {
+			Integer testNumber = lastNumberChecked1 + 1;
+			while (!checker.isPrime1(testNumber)) {
 				testNumber++;
 			}
-			lastNumberChecked = testNumber;
+			lastNumberChecked1 = testNumber;
+			primes.add(testNumber);
+		}
+	}
+
+	private void generateNextPrime2() {
+
+		//only the add really needs to be synchronized
+		synchronized (this) {
+			int testNumber = lastNumberChecked2 + 1;
+			while (!checker.isPrime2(testNumber)) {
+				testNumber++;
+			}
+			lastNumberChecked2 = testNumber;
 			primes.add(testNumber);
 		}
 	}
@@ -50,10 +71,17 @@ public class PrimeNumbersTask implements Runnable {
 		synchronized (this) {
 			primes.add(2);
 		}
-		lastNumberChecked = 2;
+
+		lastNumberChecked1 = 2;
+		lastNumberChecked2 = 2;
 
 		while (!finished) {
-			generateNextPrime();
+			if(this.targetVersion == 1) {
+				generateNextPrime1();
+			} else {
+				generateNextPrime2();
+			}
+
 		}
 	}
 }
