@@ -1,4 +1,4 @@
-package org.example;
+package com.mserpa.rabbitmq.fun;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
