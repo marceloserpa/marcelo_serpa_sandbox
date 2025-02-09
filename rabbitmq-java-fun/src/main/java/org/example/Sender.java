@@ -18,9 +18,14 @@ public class Sender {
              Channel channel = connection.createChannel()) {
 
             channel.queueDeclare(QUEUE_NAME, false, false, false, null);
-            String message = "Hello World!";
-            channel.basicPublish("", QUEUE_NAME, null, message.getBytes());
-            System.out.println(" [x] Sent '" + message + "'");
+
+            String template = "Hello World === ";
+            for(int i = 0; i < 50; i ++ ){
+                String message = template + i;
+                channel.basicPublish("", QUEUE_NAME, null, message.getBytes());
+                System.out.println(" [x] Sent '" + message + "'");
+            }
+
 
         }
 
