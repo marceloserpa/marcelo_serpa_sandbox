@@ -12,22 +12,22 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitConfig {
 
     @Bean
-    DirectExchange deadLetterExchange() {
+    public DirectExchange deadLetterExchange() {
         return new DirectExchange("orders.dlx.exchange");
     }
 
     @Bean
-    DirectExchange exchange() {
+    public DirectExchange exchange() {
         return new DirectExchange("orders.exchange");
     }
 
     @Bean
-    Queue dlq() {
+    public Queue dlq() {
         return QueueBuilder.durable("orders.dlx.queue").build();
     }
 
     @Bean
-    Queue queue() {
+    public Queue queue() {
         return QueueBuilder.durable("orders.queue")
                 .withArgument("x-dead-letter-exchange", "orders.dlx.exchange")
                 .withArgument("x-dead-letter-routing-key", "orders.dlx.rk")
@@ -35,12 +35,12 @@ public class RabbitConfig {
     }
 
     @Bean
-    Binding DLQbinding() {
+    public Binding DLQbinding() {
         return BindingBuilder.bind(dlq()).to(deadLetterExchange()).with("orders.dlx.rk");
     }
 
     @Bean
-    Binding binding() {
+    public Binding binding() {
         return BindingBuilder.bind(queue()).to(exchange()).with("orders.queue");
     }
 

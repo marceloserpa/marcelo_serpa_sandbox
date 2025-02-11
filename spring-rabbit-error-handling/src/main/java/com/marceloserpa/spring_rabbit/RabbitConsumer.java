@@ -9,11 +9,11 @@ public class RabbitConsumer {
 
     @RabbitListener(queues = "orders.queue")
     public void receive(Order order)  {
-        if(order.getPrice() < 1) {
+        if(order.price() < 1) {
             System.out.println("error");
             throw new RuntimeException("invalid price");
         }
-        System.out.println(order.getPrice());
+        System.out.println(order.price());
     }
 
 }
