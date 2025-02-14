@@ -9,6 +9,6 @@ public class OrderProcessor {
 
     @KafkaListener(id = "foo", topics = "orders", clientIdPrefix = "myClientId")
     public void listen(String data) {
-        System.out.println(data);
+        System.out.println("Listener = " + data);
     }
 }

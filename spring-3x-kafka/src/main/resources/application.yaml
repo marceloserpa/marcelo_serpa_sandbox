@@ -1,0 +1,8 @@
+spring:
+  application:
+      name: spring-3x-kafka
+  kafka:
+    producer:
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      value-deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer
