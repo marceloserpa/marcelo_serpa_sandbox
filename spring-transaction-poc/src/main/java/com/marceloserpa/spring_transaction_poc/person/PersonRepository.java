@@ -1,4 +1,4 @@
-package com.marceloserpa.spring_transaction_poc;
+package com.marceloserpa.spring_transaction_poc.person;
 
 
 import org.springframework.data.repository.ListCrudRepository;

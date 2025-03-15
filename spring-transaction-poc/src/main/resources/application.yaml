@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: spring-transaction-poc
+  datasource:
+    jdbc-url: jdbc:postgresql://localhost:5442/spring-tx-poc
+    username: postgres
+    password: postgres
+  kafka:
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.LongSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      transaction-id-prefix: tx-
+      acks: all
+      retries: 3
+
+logging:
+  level:
+    org.springframework.transaction: trace
+    org.springframework.kafka.transaction: debug

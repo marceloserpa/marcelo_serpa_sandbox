@@ -1,12 +1,10 @@
-package com.marceloserpa.spring_transaction_poc;
+package com.marceloserpa.spring_transaction_poc.person;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 
 @RestController
