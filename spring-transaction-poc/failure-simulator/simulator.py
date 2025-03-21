@@ -3,12 +3,11 @@ import time
 import shlex
 import random
 import string
-import asyncio
-import aiohttp
 import json
+import requests
+import threading
 
 from kafka import KafkaConsumer
-
 
 def exec(command):
     commands = shlex.split(command)
@@ -33,11 +32,8 @@ def exec_dev_null(command):
     return True 
 
 def exec_with_logging(command, log_file_path):
-    commands = shlex.split(command)
-    
-    # Open the log file in append mode to store logs
+    commands = shlex.split(command) 
     with open(log_file_path, 'a') as log_file:
-        # Run the command and redirect stdout and stderr to the log file
         subprocess.Popen(commands, stdout=log_file, stderr=log_file, universal_newlines=True)
 
     return True
@@ -58,76 +54,63 @@ def random_string():
     random_string = ''.join(random.choices(string.ascii_letters + string.digits, k=length))
     return random_string
 
-async def perform_post(url, request_body):
+def perform_post():
     try:
-        async with aiohttp.ClientSession() as session:
-            async with session.post(url, json=request_body) as response:
-                if response.status == 200:
-                    result = await response.text()
-                    print(f"Response: {result}")
-                else:
-                    print(f"Failed to perform POST. HTTP Status: {response.status}")
-                    result = await response.text()
-                    print(f"Error Response: {result}")
-
+        key = random_string()
+        print(f'Performing HTTP request key = {key}')
+        url = 'http://localhost:8080/person'
+        request_body = {'name': key, 'lastname': 'lastname ' + key}
+        requests.post(url=url, json=request_body)
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
 
-async def fetch_people():
-    people = list()
-    
-    async with aiohttp.ClientSession() as session:
-        async with session.get('http://localhost:8080/person') as response:
-            result = await response.text()
-            people = result 
-    return people
+def fetch_people():   
+    return requests.get('http://localhost:8080/person')
 
-async def scenario():
+def scenario(scenario_execution):
+    start = time.time()
+    print(f' ==== Running scenario {scenario_execution} ==== \n')
+
     print('Starting Java Application')
     exec_with_logging('java -jar ../build/libs/spring-transaction-poc-0.0.1-SNAPSHOT.jar', 'app.log')
-    time.sleep(3)
-    application_pid = get_pid_by_port(8080, 'java')
-
-    print(application_pid)
 
     print('Waiting Java application start')
     time.sleep(5)
 
-    key = random_string()
-    print('Performing HTTP request key='+key)
-    url = 'http://localhost:8080/person'
-    request_body = {'name': key, 'lastname': 'lastname ' + key}
+    for i in range(20):
+        print(f' >> Creating thread {i}')
+        time.sleep(1)
+        t = threading.Thread(target=perform_post)
+        t.start()
 
-    task = asyncio.create_task(perform_post(url, request_body))
-    time.sleep(9)
-    
-    print('Stop Kafka broker')
+    wait_before_kill_time = random.randint(2, 5)
+    time.sleep(wait_before_kill_time) # forcing different execution time
+    print(f'Stop Kafka broker after {wait_before_kill_time}s')
     exec('docker-compose stop kafka')
-    time.sleep(10)
-   
-    print('Kill Java process')
+
+    time.sleep(5)
+    application_pid = get_pid_by_port(8080, 'java')
+    print(f'Kill Java process PID = {application_pid}')
     exec(f'kill -9 {application_pid}')
 
-    time.sleep(1)
+    # Prepare for the next scenario
+    time.sleep(5)
     print('Start Kafka broker')
     exec('docker-compose start kafka')
 
     time.sleep(5)
 
-    await task
+    end = time.time()
+
+    print(f' ==== Completed scenario {scenario_execution} in {end - start} seconds ==== \n')
 
 
-async def simulation_start(scenarios):
+def simulation_start(scenarios):
 
-    print(">> Starting infrastructure <<")
-    exec('docker-compose -f ../docker-compose.yaml up -d')
+    start = time.time()
 
     for n in range(scenarios):
-        print(f' ==== Running scenario {n} ==== \n')
-        time.sleep(10)
-        await scenario()
-
-        print(f' ==== Completed scenario {n} ==== \n')
+        scenario(n)
 
     print('>>> Creating report')
     consumer = KafkaConsumer('people', 
@@ -166,7 +149,7 @@ async def simulation_start(scenarios):
     exec_with_logging('java -jar ../build/libs/spring-transaction-poc-0.0.1-SNAPSHOT.jar', 'app.log')
     time.sleep(5)
 
-    people =  json.loads(await fetch_people())
+    people =  fetch_people().json()
 
     found = 0
     for person in people:
@@ -180,13 +163,13 @@ async def simulation_start(scenarios):
     print(f'API returned {from_database} \n')
     print(f'Found in Kafka topic {found}')
 
-    print('Destroying infrastructure')
-    exec('docker-compose -f ../docker-compose.yaml down')
-    time.sleep(2)
+    application_pid = get_pid_by_port(8080, 'java')
+    print(f'Kill Java process PID = {application_pid}')
+    exec(f'kill -9 {application_pid}')
 
+    end = time.time()
 
-async def main():
-    await asyncio.gather(simulation_start(10))
+    print(f'Time Elapsed = {end - start} seconds')
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    simulation_start(10)

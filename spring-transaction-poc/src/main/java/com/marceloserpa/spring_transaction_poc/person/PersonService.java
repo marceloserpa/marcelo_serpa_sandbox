@@ -31,7 +31,12 @@ public class PersonService {
             var jsonString = objectMapper.writeValueAsString(personSaved);
             System.out.println(jsonString);
             System.out.println("WAIT");
-            Thread.sleep(10 * 1000);
+            
+            for(int i =0; i < 5; i++){
+                Thread.sleep(1 * 1000);
+                System.out.println("elapsed " + i + "s");
+            }
+
             sendToKafka(jsonString);
         } catch (JsonProcessingException | InterruptedException e) {
             throw new RuntimeException(e);
