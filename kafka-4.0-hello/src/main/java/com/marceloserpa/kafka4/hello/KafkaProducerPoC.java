@@ -15,7 +15,7 @@ public class KafkaProducerPoC {
 
         Properties config = new Properties();
 
-        config.put("bootstrap.servers", "192.168.160.2:9092");
+        config.put("bootstrap.servers", "127.0.0.1:9092");
         config.put("acks", "all");
         config.put("key.serializer", StringSerializer.class.getName());
         config.put("value.serializer",StringSerializer.class.getName());
