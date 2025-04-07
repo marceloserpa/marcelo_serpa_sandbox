@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class EventListener {
 
-    @KafkaListener(topics = "events", groupId = "filter-listener")
+    @KafkaListener(topics = "events", groupId = "filter-listener", filter = "customFilter")
     public void listen(String event){
         System.out.println(event);
     }
