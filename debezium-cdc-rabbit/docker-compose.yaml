@@ -1,0 +1,46 @@
+version: '3.1'
+
+services:
+
+  database:
+    image: postgres:14.2
+    restart: always
+    container_name: debezium-cdc-rabbit-db
+    networks:
+      - docker-local-network
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: debezium-cdc-rabbit-db
+    command: ['postgres', '-c', 'wal_level=logical']
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - 5442:5432
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: debezium-cdc-rabbit-broker
+    networks:
+      - docker-local-network 
+    ports:
+      - 5672:5672
+      - 15672:15672
+
+  debezium:
+    image: debezium/server:2.7.3.Final
+    container_name: debezium
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./debezium/conf:/debezium/conf
+      - ./debezium/data:/debezium/data
+    networks:
+      - docker-local-network
+    depends_on:
+      - database
+      - rabbitmq
+
+networks: 
+  docker-local-network:
+    driver: bridge  
