@@ -16,7 +16,6 @@ This project sets up a **Change Data Capture (CDC)** pipeline using:
 
 ## Data Flow
 
-
 ```mermaid
 flowchart TD
     %% C4 Container Diagram
@@ -37,3 +36,21 @@ flowchart TD
     debezium -->|Publish to exchange with defined routing key| broker
     broker --> consumer[Other Systems / Consumers]
 ```
+
+## How to run
+
+Start all containers
+
+```
+docker-compose up -d
+```
+
+Insert a new row into database.
+
+```
+./test.sh
+```
+
+## Check result
+
+![](docs/imgs/rabbit-queue.png)
