@@ -31,7 +31,7 @@ flowchart TD
         debezium[(Debezium Server)]
     end
 
-    system -->|Reads / Writes data| debezium
+    system -->|Reads / Writes data| db
     debezium -->|Monitors changes via WAL| db
     debezium -->|Publish to exchange with defined routing key| broker
     broker --> consumer[Other Systems / Consumers]
