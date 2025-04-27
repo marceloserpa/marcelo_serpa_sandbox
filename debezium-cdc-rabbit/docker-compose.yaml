@@ -17,6 +17,11 @@ services:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - 5442:5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 3s
+      retries: 5      
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -29,6 +34,11 @@ services:
     volumes:
       - ./rabbitmq/definitions.json:/etc/rabbitmq/definitions.json
       - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
 
   debezium:
     image: debezium/server:2.7.3.Final
@@ -41,8 +51,10 @@ services:
     networks:
       - docker-local-network
     depends_on:
-      - database
-      - rabbitmq      
+      database:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy     
 
 networks: 
   docker-local-network:
