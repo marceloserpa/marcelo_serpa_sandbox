@@ -1,0 +1,54 @@
+{
+    "vhosts": [
+      {
+        "name": "/"
+      }
+    ],
+    "users": [
+      {
+        "name": "guest",
+        "password": "guest",
+        "tags": "administrator"
+      }
+    ],
+    "permissions": [
+      {
+        "user": "guest",
+        "vhost": "/",
+        "configure": ".*",
+        "write": ".*",
+        "read": ".*"
+      }
+    ],
+    "exchanges": [
+      {
+        "name": "person-events",
+        "vhost": "/",
+        "type": "direct",
+        "durable": true,
+        "auto_delete": false,
+        "internal": false,
+        "arguments": {}
+      }
+    ],
+    "queues": [
+      {
+        "name": "person-queue",
+        "vhost": "/",
+        "durable": true,
+        "auto_delete": false,
+        "arguments": {}
+      }
+    ],
+    "bindings": [
+      {
+        "source": "person-events",
+        "vhost": "/",
+        "destination": "person-queue",
+        "destination_type": "queue",
+        "routing_key": "person-cdc-rk",
+        "arguments": {}
+      }
+    ]
+  }
+  

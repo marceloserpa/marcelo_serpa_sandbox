@@ -26,6 +26,9 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
+    volumes:
+      - ./rabbitmq/definitions.json:/etc/rabbitmq/definitions.json
+      - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
 
   debezium:
     image: debezium/server:2.7.3.Final
@@ -39,7 +42,7 @@ services:
       - docker-local-network
     depends_on:
       - database
-      - rabbitmq
+      - rabbitmq      
 
 networks: 
   docker-local-network:
