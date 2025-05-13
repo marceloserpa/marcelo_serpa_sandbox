@@ -1,0 +1,15 @@
+{
+    "name": "postgres-source-connector",
+    "config": {
+      "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
+      "tasks.max": "1",
+      "connection.url": "jdbc:postgresql://postgres:5432/products",
+      "connection.user": "kafka",
+      "connection.password": "kafka",
+      "table.whitelist": "person",
+      "mode": "incrementing",
+      "incrementing.column.name": "id",
+      "topic.prefix": "pg-",
+      "poll.interval.ms": 5000
+    }
+  }
