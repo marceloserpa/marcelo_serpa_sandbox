@@ -7,7 +7,7 @@ Simulating a database with pre-existent data.
 
 
 
-Use **timestamp.initial** 
+Use **timestamp.initial** to previous rows. I this case start to read data from Person 4 the newest.
 
 
 ```json
@@ -28,6 +28,6 @@ Use **timestamp.initial**
     }
   }
 ```
-
+Result:
 
 ![](imgs/kafka-events.png)
