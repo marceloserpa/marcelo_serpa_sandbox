@@ -6,9 +6,10 @@
       "connection.url": "jdbc:postgresql://postgres:5432/products",
       "connection.user": "kafka",
       "connection.password": "kafka",
+      "mode": "timestamp",
       "table.whitelist": "person",
-      "mode": "incrementing",
-      "incrementing.column.name": "id",
+      "timestamp.column.name": "updated_at",
+      "timestamp.initial": 1747262826075,
       "topic.prefix": "pg-",
       "poll.interval.ms": 5000
     }
