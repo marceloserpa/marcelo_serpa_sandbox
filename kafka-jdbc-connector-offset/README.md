@@ -7,7 +7,7 @@ Simulating a database with pre-existent data.
 
 
 
-Use **timestamp.initial** to previous rows. I this case start to read data from Person 4 the newest.
+Use timestamp.initial to define from which row the connector will start replicating the information. In this example, I chose to start the migration from record Person 4, including it.
 
 
 ```json
