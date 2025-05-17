@@ -1,0 +1,16 @@
+{
+    "name": "postgres-source-connector",
+    "config": {
+      "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
+      "tasks.max": "1",
+      "connection.url": "jdbc:postgresql://postgres:5432/products",
+      "connection.user": "kafka",
+      "connection.password": "kafka",
+      "mode": "timestamp",
+      "query": "select * from (select * from person where subscription = 'premium') as person",
+      "timestamp.column.name": "updated_at",
+      "timestamp.initial": 1747331816668,
+      "topic.prefix": "changes-premium-",
+      "poll.interval.ms": 5000
+    }
+  }
