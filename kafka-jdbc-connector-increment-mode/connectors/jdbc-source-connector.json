@@ -1,0 +1,15 @@
+{
+    "name": "postgres-source-connector",
+    "config": {
+      "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
+      "tasks.max": "1",
+      "connection.url": "jdbc:postgresql://postgres:5432/products",
+      "connection.user": "kafka",
+      "connection.password": "kafka",
+      "mode": "incrementing",
+      "query": "select * from (select * from facts where id = 10) as facts",
+      "incrementing.column.name": "id",
+      "topic.prefix": "new-facts",
+      "poll.interval.ms": 5000
+    }
+  }
