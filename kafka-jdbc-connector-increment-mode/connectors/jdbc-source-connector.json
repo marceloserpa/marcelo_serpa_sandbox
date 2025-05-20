@@ -7,7 +7,7 @@
       "connection.user": "kafka",
       "connection.password": "kafka",
       "mode": "incrementing",
-      "query": "select * from (select * from facts where id = 10) as facts",
+      "query": "select * from (select * from facts where id >= @id.initial) as facts",
       "incrementing.column.name": "id",
       "topic.prefix": "new-facts",
       "poll.interval.ms": 5000
