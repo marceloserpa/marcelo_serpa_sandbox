@@ -1,0 +1,17 @@
+{
+    "name": "postgres-source-connector",
+    "config": {
+      "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
+      "tasks.max": "1",
+      "connection.url": "jdbc:postgresql://postgres:5432/products",
+      "connection.user": "kafka",
+      "connection.password": "kafka",
+      "mode": "timestamp+incrementing",
+      "query": "select * from facts",
+      "incrementing.column.name": "id",
+      "timestamp.column.name": "created_at",
+      "timestamp.initial": 1748000811531,
+      "topic.prefix": "data-changes-",
+      "poll.interval.ms": 5000
+    }
+  }
