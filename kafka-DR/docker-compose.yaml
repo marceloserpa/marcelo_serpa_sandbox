@@ -41,6 +41,47 @@ services:
       KAFKA_BROKERCONNECT: kafka-01:29092
 
 
+  zookeeper-02:
+    image: confluentinc/cp-zookeeper:7.4.1
+    container_name: zookeeper-dr-02
+    networks:
+      - docker-local-network
+    ports:
+      - 2183:2183     
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2183
+      ZOOKEEPER_TICK_TIME: 2000
+
+  kafka-02:
+    image: confluentinc/cp-kafka:7.4.1
+    container_name: kafka-dr-02
+    depends_on:
+      - zookeeper-02
+    ports:
+      - 9093:9092
+    networks:
+      - docker-local-network      
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper-02:2183
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-02:29093,PLAINTEXT_HOST://localhost:9093
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1   
+
+  kafdrop-02:
+    image: obsidiandynamics/kafdrop:4.0.1
+    container_name: kafdrop-dr-02
+    networks: 
+      - docker-local-network
+    depends_on:
+      - kafka-02
+    ports:
+      - 19003:9000
+    environment:
+      KAFKA_BROKERCONNECT: kafka-02:29093    
+
+
 networks: 
   docker-local-network:
     driver: bridge  
