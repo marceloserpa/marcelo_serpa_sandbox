@@ -81,7 +81,21 @@ services:
     environment:
       KAFKA_BROKERCONNECT: kafka-02:29093    
 
+  mirrormaker2:
+      image: confluentinc/cp-kafka-connect:7.5.0
+      container_name: mirrormaker2
+      networks:
+        - docker-local-network
+      depends_on:
+        - kafka-01
+        - kafka-02
+      volumes:
+        - ./mm2.properties:/etc/kafka/mm2.properties
+        - ./connect-log4j.properties:/usr/share/java/kafka/connect-log4j.properties
+      environment:
+        KAFKA_LOG4J_OPTS: "-Dlog4j.configuration=file:/usr/share/java/kafka/connect-log4j.properties"
+      command: ["bash", "-c", "sleep 30 && connect-mirror-maker /etc/kafka/mm2.properties"]
 
 networks: 
   docker-local-network:
-    driver: bridge  
+    driver: bridge
