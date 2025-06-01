@@ -58,7 +58,7 @@ services:
     depends_on:
       - zookeeper-02
     ports:
-      - 9093:9092
+      - 9093:9093
     networks:
       - docker-local-network      
     environment:
