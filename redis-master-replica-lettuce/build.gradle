@@ -1,0 +1,20 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.marceloserpa.redispoc'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'io.lettuce:lettuce-core:6.6.0.RELEASE'
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}
