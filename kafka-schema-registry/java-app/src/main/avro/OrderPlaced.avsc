@@ -1,0 +1,98 @@
+{
+	"type": "record",
+	"name": "OrderPlaced",
+	"namespace": "com.marceloserpa.orders.events",
+	"doc": "Event emitted when a new order is placed.",
+	"fields": [
+		{
+			"name": "event_id",
+			"type": "string",
+			"doc": "Unique ID for the event (UUID recommended)."
+		},
+		{
+			"name": "event_timestamp",
+			"type": "string",
+			"doc": "ISO 8601 timestamp of when the event was created."
+		},
+		{
+			"name": "order_id",
+			"type": "string",
+			"doc": "Unique identifier for the order."
+		},
+		{
+			"name": "customer",
+			"type": {
+				"type": "record",
+				"name": "Customer",
+				"fields": [
+					{
+						"name": "id",
+						"type": "string"
+					},
+					{
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"name": "email",
+						"type": [
+							"null",
+							"string"
+						],
+						"default": null
+					}
+				]
+			}
+		},
+		{
+			"name": "salesman",
+			"type": {
+				"type": "record",
+				"name": "Salesman",
+				"fields": [
+					{
+						"name": "id",
+						"type": "string"
+					},
+					{
+						"name": "name",
+						"type": "string"
+					}
+				]
+			}
+		},
+		{
+			"name": "products",
+			"type": {
+				"type": "array",
+				"items": {
+					"type": "record",
+					"name": "Product",
+					"fields": [
+						{
+							"name": "id",
+							"type": "string"
+						},
+						{
+							"name": "name",
+							"type": "string"
+						},
+						{
+							"name": "quantity",
+							"type": "int"
+						},
+						{
+							"name": "unit_price",
+							"type": "double"
+						}
+					]
+				}
+			}
+		},
+		{
+			"name": "total_cost",
+			"type": "double",
+			"doc": "Total cost of the order (sum of product quantities * unit price)."
+		}
+	]
+}
