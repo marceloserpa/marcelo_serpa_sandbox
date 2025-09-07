@@ -26,12 +26,8 @@ Start all containers
 docker-compose up -d
 ```
 
-Insert a new row into database.
+Insert 10 rows into database.
 
 ```
 ./test.sh
 ```
-
-## Check result
-
-![](docs/imgs/rabbit-queue.png)
