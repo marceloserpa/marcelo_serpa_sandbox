@@ -1,0 +1,54 @@
+{
+    "vhosts": [
+      {
+        "name": "/"
+      }
+    ],
+    "users": [
+      {
+        "name": "guest",
+        "password": "guest",
+        "tags": "administrator"
+      }
+    ],
+    "permissions": [
+      {
+        "user": "guest",
+        "vhost": "/",
+        "configure": ".*",
+        "write": ".*",
+        "read": ".*"
+      }
+    ],
+    "exchanges": [
+      {
+        "name": "measurement-events",
+        "vhost": "/",
+        "type": "direct",
+        "durable": true,
+        "auto_delete": false,
+        "internal": false,
+        "arguments": {}
+      }
+    ],
+    "queues": [
+      {
+        "name": "measurement-queue",
+        "vhost": "/",
+        "durable": true,
+        "auto_delete": false,
+        "arguments": {}
+      }
+    ],
+    "bindings": [
+      {
+        "source": "measurement-events",
+        "vhost": "/",
+        "destination": "measurement-queue",
+        "destination_type": "queue",
+        "routing_key": "measurement-cdc-rk",
+        "arguments": {}
+      }
+    ]
+  }
+  
