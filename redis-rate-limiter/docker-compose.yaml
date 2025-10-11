@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  redis-master:
+    image: redis:7
+    container_name: redis-master
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--appendonly", "yes"]
+
+  redis-replica:
+    image: redis:7
+    container_name: redis-replica
+    ports:
+      - "6380:6379"
+    depends_on:
+      - redis-master
+    command: ["redis-server", "--replicaof", "redis-master", "6379"]
