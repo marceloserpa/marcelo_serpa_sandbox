@@ -1,7 +1,7 @@
 package com.marceloserpa.ratelimiter;
 
-import com.marceloserpa.ratelimiter.limiter.FixedWindowRateLimiter;
 import com.marceloserpa.ratelimiter.limiter.RateLimiter;
+import com.marceloserpa.ratelimiter.limiter.SlidingWindowCounterRateLimiter;
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
@@ -19,16 +19,18 @@ public class Main {
 
         IO.println("Simulating requests");
 
-        RateLimiter ratelimiter = new FixedWindowRateLimiter(redisCommands, 5, Duration.ofSeconds(60));
+        RateLimiter ratelimiter = new SlidingWindowCounterRateLimiter(redisCommands, 5, Duration.ofSeconds(60), Duration.ofSeconds(20));
         var businessAPI = new BusinessAPI();
 
         for (int i = 0; i < 60; i++) {
-            IO.println(String.format("Executation %d", i));
+            IO.println(String.format("Execution %d", i));
 
             if(ratelimiter.requestAllowed("Marcelo")) {
                 businessAPI.doSomething("Marcelo");
+            } else {
+                IO.println("Request not allowed");
             }
-            Thread.sleep(1000 * 2);
+            Thread.sleep(1000 * 10);
         }
     }
 }

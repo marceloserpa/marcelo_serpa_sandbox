@@ -19,7 +19,7 @@ public class FixedWindowRateLimiter implements RateLimiter{
 
     @Override
     public boolean requestAllowed(String user){
-        var key = String.format("users:%s:requests", user);
+        var key = String.format("rate_limiter:%s", user);
         Long incr = commands.incr(key);
         if (incr == 1) {
             commands.expire(key, window);
