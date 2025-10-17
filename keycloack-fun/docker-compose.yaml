@@ -36,6 +36,9 @@ services:
     networks:
       - keycloak-net
     command: start-dev 
+    volumes:
+      - './themes/custom-theme/theme:/opt/keycloak/themes'
+
 
 volumes:
   postgres_data:
