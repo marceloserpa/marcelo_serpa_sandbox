@@ -1,45 +1,90 @@
 package com.marceloserpa.ood1.taxsystem.tax;
 
+import com.marceloserpa.ood1.taxsystem.product.Product;
+import com.marceloserpa.ood1.taxsystem.product.ShoppingCart;
+
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.math.RoundingMode;
+import java.util.*;
 
 public class Calculator {
 
-    private final static Map<Integer, Map<State, Tax>> taxes;
-
-    static {
-        List<Tax> taxes2025 = List.of(
-            new Tax("ICMS", State.RS, new BigDecimal("10.5"), Category.ELECTRONIC),
-            new Tax("PIS", State.RS, new BigDecimal("2"), Category.ELECTRONIC),
-            new Tax("ICMS", State.RS, new BigDecimal("2"), Category.FOOD),
-            new Tax("ICMS", State.SP, new BigDecimal("8.1"), Category.ELECTRONIC),
-            new Tax("PIS", State.SP, new BigDecimal("3.5"), Category.ELECTRONIC),
-            new Tax("ICMS", State.SP, new BigDecimal("1"), Category.FOOD),
-            new Tax("COFINS", State.FEDERAL, new BigDecimal("2.5"), Category.ELECTRONIC)
-        );
-
-        List<Tax> taxes2026 = List.of(
-            new Tax("ICMS", State.RS, new BigDecimal("12.5"), Category.ELECTRONIC),
-            new Tax("PIS", State.RS, new BigDecimal("2.5"), Category.ELECTRONIC),
-            new Tax("ICMS", State.RS, new BigDecimal("3"), Category.FOOD),
-            new Tax("ICMS", State.SP, new BigDecimal("8.0"), Category.ELECTRONIC),
-            new Tax("PIS", State.SP, new BigDecimal("3.0"), Category.ELECTRONIC),
-            new Tax("ICMS", State.SP, new BigDecimal("1.8"), Category.FOOD),
-            new Tax("COFINS", State.FEDERAL, new BigDecimal("3"), Category.ELECTRONIC)
-        );
-
-        taxes = new HashMap<>();
-        taxes.put(2025, taxes2025.stream().collect(Collectors.toMap(Tax::state, tax -> tax)));
-        taxes.put(2026, taxes2026.stream().collect(Collectors.toMap(Tax::state, tax -> tax)));
-
+    private static record TaxKey(State state, Integer year, Category category) {
     }
 
-    private static Map<State, Tax> getTaxes(int year){
-        Map<State, Tax> stateTax = taxes.getOrDefault(year, new HashMap<>());
-        return Map.copyOf(stateTax);
+    private static class TaxTable {
+
+        private static final Map<TaxKey, List<Tax>> taxes = new HashMap<>();
+
+        public void put(TaxKey key, Tax value) {
+            List<Tax> taxByKey = taxes.get(key);
+            if(taxByKey == null) {
+                List<Tax> internal = new ArrayList<>();
+                internal.add(value);
+                taxes.put(key, internal);
+                return;
+            }
+            taxByKey.add(value);
+        }
+
+        public List<Tax> get(TaxKey key) {
+            List<Tax> taxList = taxes.get(key);
+            if(taxList == null){
+                return List.of();
+            }
+            return taxList;
+        }
+    }
+
+    private final static TaxTable TAX_TABLE = new TaxTable();
+
+
+    static {
+        List<Tax> allTaxes = List.of(
+            new Tax("ICMS", State.RS, 2025, new BigDecimal("10.5"), Category.ELECTRONIC),
+            new Tax("PIS", State.RS,  2025, new BigDecimal("2"), Category.ELECTRONIC),
+            new Tax("ICMS", State.RS,  2025, new BigDecimal("2"), Category.FOOD),
+            new Tax("ICMS", State.SP,  2025, new BigDecimal("8.1"), Category.ELECTRONIC),
+            new Tax("PIS", State.SP,  2025, new BigDecimal("3.5"), Category.ELECTRONIC),
+            new Tax("ICMS", State.SP,  2025, new BigDecimal("1"), Category.FOOD),
+            new Tax("COFINS", State.FEDERAL,  2025, new BigDecimal("2.5"), Category.ELECTRONIC),
+            new Tax("ICMS", State.RS,  2026, new BigDecimal("12.5"), Category.ELECTRONIC),
+            new Tax("PIS", State.RS,  2026, new BigDecimal("2.5"), Category.ELECTRONIC),
+            new Tax("ICMS", State.RS,  2026, new BigDecimal("3"), Category.FOOD),
+            new Tax("ICMS", State.SP,  2026, new BigDecimal("8.0"), Category.ELECTRONIC),
+            new Tax("PIS", State.SP,  2026, new BigDecimal("3.0"), Category.ELECTRONIC),
+            new Tax("ICMS", State.SP,  2026, new BigDecimal("1.8"), Category.FOOD),
+            new Tax("COFINS", State.FEDERAL,  2026, new BigDecimal("3"), Category.ELECTRONIC)
+        );
+
+        for(Tax tax : allTaxes) {
+            TAX_TABLE.put(new TaxKey(tax.state(), tax.year(), tax.category()), tax);
+        }
+    }
+
+    public Map<String, BigDecimal> calculateTaxes(ShoppingCart shoppingCart){
+        var year = shoppingCart.date().getYear();
+        var state = shoppingCart.destination();
+
+        Map<String, BigDecimal> total = new HashMap<>();
+
+        for(Product product : shoppingCart.products()){
+            List<Tax> taxesByProduct = TAX_TABLE.get(new TaxKey(state, year, product.category()));
+
+            for(Tax tax: taxesByProduct) {
+                BigDecimal taxApplied = product.price().multiply(tax.percentage())
+                        .divide(new BigDecimal("100"), RoundingMode.DOWN);
+                BigDecimal current = total.get(tax.name());
+                if (current == null) {
+                    total.put(tax.name(), taxApplied);
+                } else {
+                    total.put(tax.name(), current.add(taxApplied));
+                }
+            }
+
+        }
+        return total;
+
     }
 
 }
