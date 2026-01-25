@@ -77,12 +77,7 @@ public class Calculator {
                         .setScale(2, RoundingMode.HALF_UP);
 
                 System.out.println(tax.name() + "-" + taxApplied);
-                BigDecimal current = total.get(tax.name());
-                if (current == null) {
-                    total.put(tax.name(), taxApplied);
-                } else {
-                    total.put(tax.name(), current.add(taxApplied));
-                }
+                total.merge(tax.name(), taxApplied, BigDecimal::add);
             }
 
         }
