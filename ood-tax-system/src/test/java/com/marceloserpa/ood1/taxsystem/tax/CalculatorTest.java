@@ -21,11 +21,11 @@ class CalculatorTest {
         List<Product> products = new ArrayList<>();
         products.add(new Product("TV", new BigDecimal("1000.00"), Category.ELECTRONIC));
 
-        Map<String, BigDecimal> stringBigDecimalMap = calculator.calculateTaxes(
+        Map<TaxType, BigDecimal> stringBigDecimalMap = calculator.calculateTaxes(
                 new ShoppingCart(LocalDate.of(2026, 01, 01), products, State.RS));
 
-        assertEquals(0, new BigDecimal("125.0").compareTo(stringBigDecimalMap.get("ICMS")));
-        assertEquals(0, new BigDecimal("25").compareTo(stringBigDecimalMap.get("PIS")));
+        assertEquals(0, new BigDecimal("125.0").compareTo(stringBigDecimalMap.get(TaxType.ICMS)));
+        assertEquals(0, new BigDecimal("25").compareTo(stringBigDecimalMap.get(TaxType.PIS)));
     }
 
 
@@ -37,16 +37,11 @@ class CalculatorTest {
         products.add(new Product("Remote control", new BigDecimal("165.00"), Category.ELECTRONIC));
         products.add(new Product("Coffee", new BigDecimal("8.50"), Category.FOOD));
 
-        Map<String, BigDecimal> stringBigDecimalMap = calculator.calculateTaxes(
+        Map<TaxType, BigDecimal> result = calculator.calculateTaxes(
                 new ShoppingCart(LocalDate.of(2026, 01, 01), products, State.RS));
 
-
-        System.out.println("===");
-
-        System.out.println(stringBigDecimalMap);
-
-        assertEquals(0, new BigDecimal("145.89").compareTo(stringBigDecimalMap.get("ICMS")));
-        assertEquals(0, new BigDecimal("29.13").compareTo(stringBigDecimalMap.get("PIS")));
+        assertEquals(0, new BigDecimal("145.89").compareTo(result.get(TaxType.ICMS)));
+        assertEquals(0, new BigDecimal("29.13").compareTo(result.get(TaxType.PIS)));
 
     }
 
