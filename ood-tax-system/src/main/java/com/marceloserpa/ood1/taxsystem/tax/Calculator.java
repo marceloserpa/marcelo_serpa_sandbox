@@ -73,7 +73,10 @@ public class Calculator {
 
             for(Tax tax: taxesByProduct) {
                 BigDecimal taxApplied = product.price().multiply(tax.percentage())
-                        .divide(new BigDecimal("100"), RoundingMode.DOWN);
+                        .divide(new BigDecimal("100.00"))
+                        .setScale(2, RoundingMode.HALF_UP);
+
+                System.out.println(tax.name() + "-" + taxApplied);
                 BigDecimal current = total.get(tax.name());
                 if (current == null) {
                     total.put(tax.name(), taxApplied);
