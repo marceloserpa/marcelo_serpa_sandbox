@@ -11,14 +11,14 @@ public class Main {
     static void main() {
         Executor executor = new SyncExecutor();
         Appender appender = new ConsoleAppender();
-        Logger logger = new Logger(executor, appender);
+        Logger logger = new Logger(executor, appender, Main.class);
         logger.info("Marcelo");
         logger.debug("Serpa");
         logger.error("Test");
 
         System.out.println("==================================");
 
-        Logger loggerAsync = new Logger(new AsyncExecutor(), new ConsoleAppender());
+        Logger loggerAsync = new Logger(new AsyncExecutor(), new ConsoleAppender(), Main.class);
         loggerAsync.info("Marcelo");
         loggerAsync.debug("Serpa");
         loggerAsync.error("Test");

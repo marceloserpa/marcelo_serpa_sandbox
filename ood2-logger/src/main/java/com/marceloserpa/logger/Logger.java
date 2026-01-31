@@ -9,14 +9,16 @@ public class Logger {
 
     private final Executor executor;
     private final Appender appender;
+    private final Class clazz;
 
-    public Logger(Executor executor, Appender appender) {
+    public Logger(Executor executor, Appender appender, Class clazz) {
         this.executor = executor;
         this.appender = appender;
+        this.clazz = clazz;
     }
 
     public void log(String message, LogLevel logLevel) {
-        executor.execute(appender, new LogEvent(logLevel, message, Instant.now()));
+        executor.execute(appender, new LogEvent(logLevel, message, Instant.now(), this.clazz));
     }
 
     public void info(String message){
