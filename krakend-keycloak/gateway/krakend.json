@@ -1,0 +1,22 @@
+{
+    "version": 3,
+    "name": "Movies Novel API",
+    "port": 8080,
+    "cache_ttl": "3600s",
+    "timeout": "3s",
+    "endpoints": [
+        {
+            "endpoint": "/api/movie/v1/movies",
+            "backend": [
+                {
+                    "url_pattern": "/movie/v1/movies/",
+                    "is_collection": "true",
+                    "encoding": "json",
+                    "host": [
+                        "http://movie-api:3000"
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,14 @@
+version: '3.7'
+services:
+  krakend:
+    image: krakend:2.12.1
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./gateway/krakend.json:/etc/krakend/krakend.json
+    command: ["run", "-c", "/etc/krakend/krakend.json"]
+
+  movie-api:
+    build: movies-api/
+    ports:
+      - "3000:3000"
