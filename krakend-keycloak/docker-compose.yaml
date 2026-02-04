@@ -1,14 +1,55 @@
-version: '3.7'
+version: '3.8'
+
 services:
-  krakend:
-    image: krakend:2.12.1
+  postgres:
+    image: postgres:17.6
+    container_name: poc-keycloak-db
+    restart: always
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - keycloak-net
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.3.4 
+    container_name: poc-keycloak
+    restart: always
+    environment:
+      KC_DB: postgres
+      KC_DB_URL_HOST: poc-keycloak-db
+      KC_DB_URL_DATABASE: keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: password
+      KC_HOSTNAME: localhost
+      KC_HOSTNAME_PORT: 8080 
+      KC_HTTP_ENABLED: "true" 
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin_password
     ports:
       - "8080:8080"
+    depends_on:
+      - postgres
+    networks:
+      - keycloak-net
+    command: start-dev 
     volumes:
-      - ./gateway/krakend.json:/etc/krakend/krakend.json
-    command: ["run", "-c", "/etc/krakend/krakend.json"]
+      - './themes/custom-theme/theme:/opt/keycloak/themes'
 
-  movie-api:
-    build: movies-api/
+  frontend:
+    build: frontend-app/
     ports:
-      - "3000:3000"
+      - "4200:80"
+    networks:
+      - keycloak-net      
+
+
+
+volumes:
+  postgres_data:
+
+networks:
+  keycloak-net:
