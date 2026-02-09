@@ -38,14 +38,14 @@ services:
     command: start-dev 
     volumes:
       - './themes/custom-theme/theme:/opt/keycloak/themes'
-
-  frontend:
-    build: frontend-app/
+ 
+  movies-api:
+    container_name: poc-keycloak-movies-api
+    build: movies-api/
     ports:
-      - "4200:80"
+      - "3000:3000"
     networks:
-      - keycloak-net      
-
+      - keycloak-net   
 
 
 volumes:
