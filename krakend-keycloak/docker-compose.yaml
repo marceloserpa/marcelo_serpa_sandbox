@@ -38,15 +38,6 @@ services:
     command: start-dev 
     volumes:
       - './themes/custom-theme/theme:/opt/keycloak/themes'
- 
-  movies-api:
-    container_name: poc-keycloak-movies-api
-    build: movies-api/
-    ports:
-      - "3000:3000"
-    networks:
-      - keycloak-net   
-
 
 volumes:
   postgres_data:
