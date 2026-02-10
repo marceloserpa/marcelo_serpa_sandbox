@@ -39,6 +39,24 @@ services:
     volumes:
       - './themes/custom-theme/theme:/opt/keycloak/themes'
 
+  krakend:
+    image: krakend:2.12.1
+    ports:
+      - "9000:8080"
+    volumes:
+      - ./gateway/krakend.json:/etc/krakend/krakend.json
+    command: ["run", "-c", "/etc/krakend/krakend.json"]
+    networks:
+      - keycloak-net
+
+  movie-api:
+    build: movies-api/
+    ports:
+      - "3000:3000"
+    networks:
+      - keycloak-net
+
+
 volumes:
   postgres_data:
 

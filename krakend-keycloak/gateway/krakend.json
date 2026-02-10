@@ -4,9 +4,15 @@
     "port": 8080,
     "cache_ttl": "3600s",
     "timeout": "3s",
+    "input_headers": [
+        "Authorization"
+    ],
     "endpoints": [
         {
             "endpoint": "/api/movie/v1/movies",
+            "input_headers": [
+                "Authorization"
+            ],
             "backend": [
                 {
                     "url_pattern": "/movie/v1/movies/",
@@ -16,7 +22,18 @@
                         "http://movie-api:3000"
                     ]
                 }
-            ]
+            ],
+            "extra_config": {
+                "auth/validator": {
+                  "alg": "RS256",
+                  "jwk_url": "http://poc-keycloak:8080/realms/marcelocorp/protocol/openid-connect/certs",
+                  "issuer": "http://localhost:8080/realms/marcelocorp",
+                  "disable_jwk_security": true,
+                  "propagate_claims": [
+                    ["*", "*"]
+                  ]
+                }
+              }
         }
     ]
 }
