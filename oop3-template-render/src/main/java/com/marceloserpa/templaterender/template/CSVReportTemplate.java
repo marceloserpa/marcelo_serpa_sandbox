@@ -5,7 +5,7 @@ import java.util.List;
 public class CSVReportTemplate extends ReportTemplate{
     @Override
     String renderHeader(String text) {
-        return new StringBuilder("== ").append(text).append(" ==;\n").toString();
+        return "== %s ==;\n".formatted(text);
     }
 
     @Override
