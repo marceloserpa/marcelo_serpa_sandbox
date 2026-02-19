@@ -2,7 +2,7 @@ package com.marceloserpa.templaterender.template;
 
 import java.util.List;
 
-public class CSVReportTemplate extends ReportTemplate{
+public final class CSVReportTemplate extends ReportTemplate{
     @Override
     String renderHeader(String text) {
         return "== %s ==;\n".formatted(text);

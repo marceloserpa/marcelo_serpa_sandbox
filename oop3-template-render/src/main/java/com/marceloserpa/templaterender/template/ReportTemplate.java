@@ -2,15 +2,15 @@ package com.marceloserpa.templaterender.template;
 
 import java.util.List;
 
-public abstract class ReportTemplate {
+public abstract sealed class ReportTemplate permits CSVReportTemplate, HtmlReportTemplate{
 
     abstract String renderHeader(String text);
 
     abstract String renderTable(List<Row> rows);
 
     public void render(String text, List<Row> rows){
-        var report = new StringBuilder().append(renderHeader(text))
-                .append(renderTable(rows)).toString();
+        var report = renderHeader(text) +
+                renderTable(rows);
         System.out.println(report);
     }
 
