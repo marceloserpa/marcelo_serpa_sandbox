@@ -18,15 +18,13 @@
 
 package marceloserpa;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.connector.kafka.source.enumerator.initializer.OffsetsInitializer;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class DataStreamJob {
@@ -37,7 +35,7 @@ public class DataStreamJob {
 		env.setParallelism(1);
 		System.out.println("Environment created");
 
-		KafkaSource<String> source = KafkaSource.<String>builder()
+		KafkaSource<String> salesmanTopicSource = KafkaSource.<String>builder()
 				.setBootstrapServers("localhost:9092")
 				.setTopics("salesman")
 				.setGroupId("salesman-read-group-1")
@@ -45,15 +43,15 @@ public class DataStreamJob {
 				.setValueOnlyDeserializer(new SimpleStringSchema())
 				.build();
 
-		DataStream<String> stream =
-				env.fromSource(
-						source,
+		DataStream<Salesman> salesmanStream = env.fromSource(
+						salesmanTopicSource,
 						WatermarkStrategy.noWatermarks(),
-						"Kafka Source"
-				);
+						"Kafka Source")
+				.map(new SalesmanDeserializer());
+
 
 		// Print events to console
-		stream.print();
+		salesmanStream.print();
 
 		env.execute("flink hello world count..");
 
