@@ -1,6 +1,6 @@
 #!/bin/bash
 
-KAFKA_CONTAINER="eaec3d08fa47"
+KAFKA_CONTAINER=a2b9cdffb99a
 BOOTSTRAP_SERVER="localhost:9092"
 
 TOPICS=("salesman" "sale" "store" "sales-enriched")
@@ -14,7 +14,7 @@ do
     --if-not-exists \
     --topic $TOPIC \
     --bootstrap-server $BOOTSTRAP_SERVER \
-    --partitions 3 \
+    --partitions 1 \
     --replication-factor 1
 
 done
