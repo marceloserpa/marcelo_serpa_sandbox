@@ -5,7 +5,7 @@ BOOTSTRAP="localhost:9092"
 
 SALES_TOPIC="sale"
 
-SALES=10
+SALES=1
 SALESMEN=4
 
 echo "Creating fake sales..."

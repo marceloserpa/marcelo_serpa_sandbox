@@ -20,8 +20,11 @@ package marceloserpa;
 
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
+import org.apache.flink.api.common.state.MapStateDescriptor;
+import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.connector.kafka.source.enumerator.initializer.OffsetsInitializer;
+import org.apache.flink.streaming.api.datastream.BroadcastStream;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
@@ -76,12 +79,25 @@ public class DataStreamJob {
 						"Kafka Source")
 				.map(new SaleDeserializer());
 
-		// Print events to console
-		salesmanStream.print();
+		MapStateDescriptor<Integer, Salesman> salesmanStateDescriptor =
+				new MapStateDescriptor<>("salesmanBroadcastState", Integer.class, Salesman.class);
+		BroadcastStream<Salesman> salesmanBroadcast = salesmanStream.broadcast(salesmanStateDescriptor);
 
-		storeStream.print();
+		MapStateDescriptor<Integer, Store> storeStateDescriptor =
+				new MapStateDescriptor<>("storeBroadcastState", Integer.class, Store.class);
+		BroadcastStream<Store> storeBroadcast = storeStream.broadcast(storeStateDescriptor);
 
-		saleStream.print();
+		DataStream<Tuple2<Sale, Salesman>> saleWithSalesman = saleStream
+				.keyBy(Sale::getSalesman_id)
+				.connect(salesmanBroadcast)
+				.process(new SaleSalesmanBroadcastProcess(salesmanStateDescriptor));
+
+		DataStream<SaleEnriched> enrichedStream = saleWithSalesman
+				.keyBy(t -> t.f1.getStore_id())
+				.connect(storeBroadcast)
+				.process(new SaleStoreBroadcastProcess(storeStateDescriptor));
+
+		enrichedStream.print();
 
 		env.execute("flink hello world count..");
 

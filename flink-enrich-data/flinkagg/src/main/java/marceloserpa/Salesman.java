@@ -2,9 +2,9 @@ package marceloserpa;
 
 public class Salesman {
 
-    public int id;
-    public String name;
-    public int store_id;
+    private int id;
+    private String name;
+    private int store_id;
 
     public int getId() {
         return id;
