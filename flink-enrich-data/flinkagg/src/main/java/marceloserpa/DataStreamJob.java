@@ -18,7 +18,6 @@
 
 package marceloserpa;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.connector.kafka.source.KafkaSource;
@@ -49,9 +48,40 @@ public class DataStreamJob {
 						"Kafka Source")
 				.map(new SalesmanDeserializer());
 
+		KafkaSource<String> storeTopicSource = KafkaSource.<String>builder()
+				.setBootstrapServers("localhost:9092")
+				.setTopics("store")
+				.setGroupId("store-read-group-1")
+				.setStartingOffsets(OffsetsInitializer.earliest())
+				.setValueOnlyDeserializer(new SimpleStringSchema())
+				.build();
+
+		DataStream<Store> storeStream = env.fromSource(
+						storeTopicSource,
+						WatermarkStrategy.noWatermarks(),
+						"Kafka Source")
+				.map(new StoreDeserializer());
+
+		KafkaSource<String> saleTopicSource = KafkaSource.<String>builder()
+				.setBootstrapServers("localhost:9092")
+				.setTopics("sale")
+				.setGroupId("sale-read-group-1")
+				.setStartingOffsets(OffsetsInitializer.earliest())
+				.setValueOnlyDeserializer(new SimpleStringSchema())
+				.build();
+
+		DataStream<Sale> saleStream = env.fromSource(
+						saleTopicSource,
+						WatermarkStrategy.noWatermarks(),
+						"Kafka Source")
+				.map(new SaleDeserializer());
 
 		// Print events to console
 		salesmanStream.print();
+
+		storeStream.print();
+
+		saleStream.print();
 
 		env.execute("flink hello world count..");
 
