@@ -1,6 +1,6 @@
 #!/bin/bash
 
-KAFKA_CONTAINER=a2b9cdffb99a
+KAFKA_CONTAINER=701bd6adbf01
 BOOTSTRAP="localhost:9092"
 
 SALESMAN_TOPIC="salesman"

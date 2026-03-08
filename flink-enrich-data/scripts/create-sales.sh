@@ -1,11 +1,11 @@
 #!/bin/bash
 
-KAFKA_CONTAINER=a2b9cdffb99a
+KAFKA_CONTAINER=701bd6adbf01
 BOOTSTRAP="localhost:9092"
 
 SALES_TOPIC="sale"
 
-SALES=2
+SALES=10
 SALESMEN=4
 
 echo "Creating fake sales..."
