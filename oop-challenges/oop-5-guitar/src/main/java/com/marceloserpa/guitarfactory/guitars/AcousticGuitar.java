@@ -1,4 +1,6 @@
-package com.marceloserpa.guitarfactory;
+package com.marceloserpa.guitarfactory.guitars;
+
+import com.marceloserpa.guitarfactory.components.GuitarSpec;
 
 public record AcousticGuitar(
         String serialNumber,

@@ -1,4 +1,4 @@
-package com.marceloserpa.guitarfactory;
+package com.marceloserpa.guitarfactory.components;
 
 public enum WoodType {
 

@@ -1,5 +1,12 @@
 package com.marceloserpa.guitarfactory;
 
+import com.marceloserpa.guitarfactory.components.GuitarColor;
+import com.marceloserpa.guitarfactory.components.GuitarSpec;
+import com.marceloserpa.guitarfactory.components.PickupType;
+import com.marceloserpa.guitarfactory.components.WoodType;
+import com.marceloserpa.guitarfactory.guitars.Guitar;
+import com.marceloserpa.guitarfactory.guitars.GuitarFactory;
+
 public class Main {
     static void main() {
 
