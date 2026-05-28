@@ -1,0 +1,1 @@
+rootProject.name = "oop7-ticket-system"
