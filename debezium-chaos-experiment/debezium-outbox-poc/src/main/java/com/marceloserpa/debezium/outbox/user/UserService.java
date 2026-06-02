@@ -22,8 +22,8 @@ public class UserService {
     @Autowired
     private ObjectMapper mapper;
 
-    public List<User> getAll(Long id){
-        return Streamable.of(userRepository.findByTenantId(id)).toList() ;
+    public List<User> getAll(){
+        return Streamable.of(userRepository.findAll()).toList() ;
     }
 
     @Transactional

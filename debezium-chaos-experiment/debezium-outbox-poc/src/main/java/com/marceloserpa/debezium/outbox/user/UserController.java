@@ -13,8 +13,8 @@ public class UserController {
     private UserService userService;
 
     @GetMapping
-    public List<User> getUsers(Long tenantId) {
-        return userService.getAll(tenantId);
+    public List<User> getUsers() {
+        return userService.getAll();
     }
 
     @PostMapping

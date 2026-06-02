@@ -11,17 +11,7 @@ public class User {
     @Column("id")
     private Long userId;
 
-    @Column("tenant_id")
-    private Long tenantId;
     private String username;
-
-    public Long getTenantId() {
-        return tenantId;
-    }
-
-    public void setTenantId(Long tenantId) {
-        this.tenantId = tenantId;
-    }
 
     public Long getUserId() {
         return userId;
