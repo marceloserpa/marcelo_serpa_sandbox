@@ -24,7 +24,7 @@ public class OutboxService<T> {
         String json = null;
         try {
             var traceId = UUID.randomUUID();
-            LOG.info("[EventProcessed] trace_id="+traceId.toString());
+            LOG.info("[EventCreated] trace_id="+traceId.toString());
             Payload<T> payload = new Payload<T>(traceId, t);
             json = mapper.writeValueAsString(payload);
         } catch (JsonProcessingException e) {
