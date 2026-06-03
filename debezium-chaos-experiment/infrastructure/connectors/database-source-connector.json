@@ -21,6 +21,12 @@
       "topic.creation.default.replication.factor": "1",
       "topic.creation.default.retention.ms": "604800000",
       "topic.creation.enable": "true",
-      "topic.prefix": "postgres"
+      "topic.prefix": "postgres",
+
+      "transforms": "unwrap,extract",
+      "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
+      "transforms.extract.type": "org.apache.kafka.connect.transforms.ExtractField$Value",
+      "transforms.extract.field": "payload"
+      
     }
   }
