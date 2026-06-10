@@ -2,7 +2,9 @@ package com.marceloserpa.grocery.todo;
 
 public class Item {
 
-    public Item() {
+    public Item(String product, Integer quantity) {
+        this.product = product;
+        this.quantity = quantity;
     }
 
     public Item(String product, Integer quantity, boolean completed) {
@@ -38,4 +40,9 @@ public class Item {
     public void setCompleted(boolean completed) {
         this.completed = completed;
     }
+
+    public String toString(){
+        return "product: '%s' quantity: %d completed: %s".formatted(product, quantity, completed) ;
+    }
+
 }

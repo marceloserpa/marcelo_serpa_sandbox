@@ -4,23 +4,24 @@ import com.marceloserpa.grocery.todo.Item;
 
 import java.util.List;
 
-public class AddItemCommand implements Command{
+public class ChangeCompletedToggleCommand implements Command{
 
     private final List<Item> items;
     private final Item item;
 
-    public AddItemCommand(List<Item> todoList, Item item) {
+    public ChangeCompletedToggleCommand(List<Item> todoList, Item item) {
         this.items = todoList;
         this.item = item;
     }
 
+
     @Override
     public void execute() {
-        items.add(this.item);
+        item.setCompleted(!item.isCompleted());
     }
 
     @Override
     public void undo() {
-        this.items.remove(this.item);
+        item.setCompleted(!item.isCompleted());
     }
 }
