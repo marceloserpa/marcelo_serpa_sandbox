@@ -11,8 +11,6 @@ repositories {
 }
 
 java {
-    // Pitest's bundled ASM cannot read Java 25 (class major version 69) bytecode yet,
-    // so pin the whole build (compile/test/pitest) to JDK 21.
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(21))
     }
