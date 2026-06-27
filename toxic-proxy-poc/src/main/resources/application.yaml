@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: toxic-proxy-poc
+  datasource:
+    url: jdbc:postgresql://localhost:5442/starwars
+    username: postgres
+    password: postgres
