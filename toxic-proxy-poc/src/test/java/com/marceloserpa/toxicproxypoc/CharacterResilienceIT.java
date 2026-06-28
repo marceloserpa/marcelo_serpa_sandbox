@@ -5,6 +5,7 @@ import eu.rekawek.toxiproxy.model.toxic.Latency;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockserver.verify.VerificationTimes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -38,6 +39,13 @@ public class CharacterResilienceIT extends AbstractIntegrationTest{
     @BeforeEach
     void setup() throws IOException, InterruptedException {
         starwarsApiProxy.toxics().getAll().forEach(t -> {
+            try {
+                t.remove();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        redisProxy.toxics().getAll().forEach(t -> {
             try {
                 t.remove();
             } catch (IOException e) {
@@ -104,6 +112,26 @@ public class CharacterResilienceIT extends AbstractIntegrationTest{
 
         Character character = characterClient.findById(1L).get();
         assertEquals("Luke Skywalker", character.name());
+    }
+
+
+    @Test
+    @DisplayName("...")
+    void shouldRetryWhenStarWarsApiReturn500() throws IOException {
+        stubLukeSkywalker();
+
+        Latency toxic = starwarsApiProxy.toxics().latency("flaky-network", DOWNSTREAM, 3000);
+        toxic.setToxicity(0.6f); // 60% of requests will fail.
+
+        Character character = characterClient.findById(1L).get();
+
+        assertEquals("Luke Skywalker", character.name());
+
+        // Ensure the API (mocked) was called multiple times.
+        mockServerClient.verify(
+                org.mockserver.model.HttpRequest.request().withPath("/people/1/"),
+                VerificationTimes.atLeast(2));
+
     }
     
 }

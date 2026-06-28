@@ -39,6 +39,7 @@ public class Config {
 
         return RestClient.builder()
                 .baseUrl(apiBaseUrl)
+                .requestInterceptor(new RestClientRetryInterceptor(3, 3000))
                 .requestFactory(factory)
                 .build();
     }
