@@ -11,9 +11,9 @@ import java.util.Optional;
 @Service
 public class CharacterService {
 
-    private RestClient restClient;
-    private RedisTemplate<String, String> redisTemplate;
-    private ObjectMapper objectMapper;
+    private final RestClient restClient;
+    private final RedisTemplate<String, String> redisTemplate;
+    private final ObjectMapper objectMapper;
 
     public CharacterService(RestClient restClient, RedisTemplate<String, String> redisTemplate, ObjectMapper objectMapper) {
         this.restClient = restClient;

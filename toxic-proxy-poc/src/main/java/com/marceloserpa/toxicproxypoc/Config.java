@@ -7,8 +7,12 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.client.JdkClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
 import tools.jackson.databind.ObjectMapper;
+
+import java.net.http.HttpClient;
+import java.time.Duration;
 
 @Configuration
 public class Config {
@@ -19,10 +23,23 @@ public class Config {
     @Value("${redis.port}")
     private int port;
 
+    @Value("${starwars.base-url}")
+    private String apiBaseUrl;
+
     @Bean
     public RestClient restClient(){
+        HttpClient httpClient = HttpClient.newBuilder()
+                .connectTimeout(Duration.ofSeconds(2))
+                .build();
+
+        JdkClientHttpRequestFactory factory =
+                new JdkClientHttpRequestFactory(httpClient);
+
+        factory.setReadTimeout(Duration.ofSeconds(2));
+
         return RestClient.builder()
-                .baseUrl("https://swapi.bry.com.br/api/")
+                .baseUrl(apiBaseUrl)
+                .requestFactory(factory)
                 .build();
     }
 

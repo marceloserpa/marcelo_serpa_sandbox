@@ -20,6 +20,15 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+	testImplementation platform("org.testcontainers:testcontainers-bom:1.21.3")
+	testImplementation 'org.testcontainers:junit-jupiter'
+	testImplementation 'org.testcontainers:testcontainers'
+	testImplementation 'org.testcontainers:mockserver'
+	testImplementation 'org.testcontainers:toxiproxy'
+
+	testImplementation "org.mock-server:mockserver-client-java:5.5.4"
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }

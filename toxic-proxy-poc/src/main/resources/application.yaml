@@ -8,3 +8,5 @@ spring:
 redis:
   host: localhost
   port: 6379
+starwars:
+  base-url: "https://swapi.bry.com.br/api/"
