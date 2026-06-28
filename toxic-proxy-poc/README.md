@@ -1,20 +1,14 @@
 # Toxic Proxy PoC
 
-
 ## Scenarios: 
 
-- Write path = application --> HTTP API? --> Postgres
-- READ Path = application --> REDIS --> Postgres
-- READ Path (cache miss) = application --> REDIS --> Postgres --> REDIS
-
-** PG Read-replica??
-
+- READ Path = Application --> REDIS
+- READ Path (cache miss) = Application --> REDIS --> Starwars API --> REDIS
 
 ## Stack
 
 - Java 25
 - SpringBoot
-- Postgres
 - Redis
 - Toxic Proxy
 

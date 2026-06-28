@@ -80,11 +80,11 @@ public class CharacterResilienceIT extends AbstractIntegrationTest{
 
     @Test
     @DisplayName("External API intermittent delay issue")
-    void shouldFailWithLatency() throws IOException {
+    void shouldTimeoutIfRequestTakeMoreThan3Seconds() throws IOException {
         stubLukeSkywalker();
 
         Latency delay = starwarsApiProxy.toxics()
-                .latency("delay", DOWNSTREAM, 5000);
+                .latency("delay", DOWNSTREAM, 3000);
 
         assertThrows(ResourceAccessException.class,
                 () -> characterClient.findById(1L));
@@ -97,7 +97,7 @@ public class CharacterResilienceIT extends AbstractIntegrationTest{
 
     @Test
     @DisplayName("Redis failure should not affect")
-    void redisFailture() throws IOException {
+    void shouldIgnoreRedisIfItIsDown() throws IOException {
         stubLukeSkywalker();
 
         redisProxy.setConnectionCut(true);
@@ -105,5 +105,5 @@ public class CharacterResilienceIT extends AbstractIntegrationTest{
         Character character = characterClient.findById(1L).get();
         assertEquals("Luke Skywalker", character.name());
     }
-
+    
 }
