@@ -24,12 +24,12 @@ public class CharacterResilienceIT extends AbstractIntegrationTest{
                 "starwars.base-url",
                 () -> "http://%s:%d".formatted(
                         toxiproxy.getHost(),
-                        proxy.getProxyPort()
+                        starwarsApiProxy.getProxyPort()
                 )
         );
         registry.add("redis.host", redis::getHost);
         registry.add("redis.port",
-                () -> redis.getMappedPort(6379));
+                () -> redisProxy.getProxyPort());
     }
 
     @Autowired
@@ -37,7 +37,7 @@ public class CharacterResilienceIT extends AbstractIntegrationTest{
 
     @BeforeEach
     void setup() throws IOException, InterruptedException {
-        proxy.toxics().getAll().forEach(t -> {
+        starwarsApiProxy.toxics().getAll().forEach(t -> {
             try {
                 t.remove();
             } catch (IOException e) {
@@ -83,13 +83,24 @@ public class CharacterResilienceIT extends AbstractIntegrationTest{
     void shouldFailWithLatency() throws IOException {
         stubLukeSkywalker();
 
-        Latency delay = proxy.toxics()
+        Latency delay = starwarsApiProxy.toxics()
                 .latency("delay", DOWNSTREAM, 5000);
 
         assertThrows(ResourceAccessException.class,
                 () -> characterClient.findById(1L));
 
         delay.remove();
+
+        Character character = characterClient.findById(1L).get();
+        assertEquals("Luke Skywalker", character.name());
+    }
+
+    @Test
+    @DisplayName("Redis failure should not affect")
+    void redisFailture() throws IOException {
+        stubLukeSkywalker();
+
+        redisProxy.setConnectionCut(true);
 
         Character character = characterClient.findById(1L).get();
         assertEquals("Luke Skywalker", character.name());

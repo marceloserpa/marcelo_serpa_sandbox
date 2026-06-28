@@ -30,12 +30,10 @@ public class AbstractIntegrationTest {
             new ToxiproxyContainer("ghcr.io/shopify/toxiproxy:2.12.0")
                     .withNetwork(network);
 
-    protected static ToxiproxyContainer.ContainerProxy proxy;
+    protected static ToxiproxyContainer.ContainerProxy starwarsApiProxy;
+    protected static ToxiproxyContainer.ContainerProxy redisProxy;
 
     protected static MockServerClient mockServerClient;
-
-
-    protected static Proxy starwarsApiProxy;
 
     @BeforeAll
     static void setUp() throws IOException {
@@ -43,7 +41,8 @@ public class AbstractIntegrationTest {
         toxiproxy.start();
         redis.start();
 
-        proxy = toxiproxy.getProxy(mockServer, MockServerContainer.PORT);
+        starwarsApiProxy = toxiproxy.getProxy(mockServer, MockServerContainer.PORT);
+        redisProxy = toxiproxy.getProxy(redis, 6379) ;
 
         mockServerClient = new MockServerClient(
                 mockServer.getHost(),
