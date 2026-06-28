@@ -15,7 +15,9 @@ public class CharacterService {
     private final RedisTemplate<String, String> redisTemplate;
     private final ObjectMapper objectMapper;
 
-    public CharacterService(RestClient restClient, RedisTemplate<String, String> redisTemplate, ObjectMapper objectMapper) {
+    public CharacterService(RestClient restClient,
+                            RedisTemplate<String, String> redisTemplate,
+                            ObjectMapper objectMapper) {
         this.restClient = restClient;
         this.redisTemplate = redisTemplate;
         this.objectMapper = objectMapper;
@@ -23,10 +25,8 @@ public class CharacterService {
 
     public Optional<Character> findById(Long id) {
         String key = "starwars:people:" + id;
-        String cached = redisTemplate.opsForValue().get(key);
-        if(cached != null) {
-            return Optional.of(objectMapper.readValue(cached, Character.class));
-        }
+        Optional<Character> cached = getCharacterFromCache(key);
+        if (cached.isPresent()) return cached;
 
         IO.println("Not in cache ...");
         Character character = restClient.get().uri("people/"+id+"/")
@@ -35,13 +35,36 @@ public class CharacterService {
         if(character == null) {
             return Optional.empty();
         }
-
-        redisTemplate.opsForValue().set(key,
-                objectMapper.writeValueAsString(character),
-                Duration.ofSeconds(30));
-        IO.println("Character id=" + id + " cached.");
+        updateCharacterCache(id, key, character);
 
         return Optional.of(character);
+    }
+
+    private void updateCharacterCache(Long id, String key, Character character) {
+        try {
+            redisTemplate.opsForValue().set(key,
+                    objectMapper.writeValueAsString(character),
+                    Duration.ofSeconds(30));
+            IO.println("Character id=" + id + " cached.");
+        } catch (Exception exception) {
+            IO.println("Failure to connect on Redis.... Skip update cache.");
+        }
+
+    }
+
+    private Optional<Character> getCharacterFromCache(String key) {
+        String cached = null;
+        try{
+            cached = redisTemplate.opsForValue().get(key);
+        } catch (Exception exception) {
+            IO.println("Failure to connect on Redis....");
+            return Optional.empty();
+        }
+
+        if(cached != null) {
+            return Optional.of(objectMapper.readValue(cached, Character.class));
+        }
+        return Optional.empty();
     }
 
 }
