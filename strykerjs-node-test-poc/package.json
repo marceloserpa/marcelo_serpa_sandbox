@@ -1,0 +1,19 @@
+{
+  "name": "strykerjs-node-test-poc",
+  "version": "1.0.0",
+  "description": "PoC: mutation testing a TypeScript app with StrykerJS and node:test",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test test/**/*.test.ts",
+    "mutation": "stryker run"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@stryker-mutator/core": "^10.0.0",
+    "@types/node": "^26.6.2",
+    "typescript": "^5.9.3"
+  }
+}
